@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_zoom_sdk/flutter_zoom_sdk.dart';
 import 'package:flutter_zoom_sdk/model/models.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterZoomSdk.initZoom(
-      InitParams(appKey: "", appSecret: "", domain: "zoom.us"));
+  await dotenv.load(fileName: ".env");
+
+  await FlutterZoomSdk.initZoom(InitParams(
+      appKey: dotenv.env['ZOOM_KEY']!,
+      appSecret: dotenv.env['ZOOM_SECRET']!,
+      domain: dotenv.env['zoom.us']!));
+
   FlutterZoomSdk.onMeetingStatus().listen((status) {
     print("[Meeting Status Stream] : " + status[0] + " - " + status[1]);
   });
