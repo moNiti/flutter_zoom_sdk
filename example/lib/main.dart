@@ -10,7 +10,7 @@ void main() async {
   await FlutterZoomSdk.initZoom(InitParams(
       appKey: dotenv.env['ZOOM_KEY']!,
       appSecret: dotenv.env['ZOOM_SECRET']!,
-      domain: dotenv.env['zoom.us']!));
+      domain: dotenv.env['ZOOM_DOMAIN']!));
 
   FlutterZoomSdk.onMeetingStatus().listen((status) {
     print("[Meeting Status Stream] : " + status[0] + " - " + status[1]);
