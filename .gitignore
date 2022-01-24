@@ -30,3 +30,6 @@ build/
 android/libs/commonlib.aar
 android/libs/mobilertc.aar
 android/*.hprof
+ios/MobileRTC.xcframework/*
+ios/MobileRTCResources.bundle/*
+ios/MobileRTCScreenShare.xcframework/*

@@ -19,5 +19,10 @@ A new flutter plugin project.
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }  
+  s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-framework MobileRTC', 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+
+  s.preserve_paths = 'MobileRTC.xcframework', 'MobileRTCResources.bundle'
+  s.vendored_frameworks = 'MobileRTC.xcframework'
+  # s.resource = 'MobileRTCResources.bundle'
+  s.resource_bundles= {'MobileRTCResources' => 'MobileRTCResources.bundle'}
 end
