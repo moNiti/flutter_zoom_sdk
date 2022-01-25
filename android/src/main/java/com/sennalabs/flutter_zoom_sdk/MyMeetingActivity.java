@@ -956,7 +956,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     }
 
     private void showLeaveMeetingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, us.zoom.videomeetings.R.style.ZMDialog);
         if (mInMeetingService.isMeetingConnected()) {
             if (mInMeetingService.isMeetingHost()) {
                 builder.setTitle("End or leave meeting")
