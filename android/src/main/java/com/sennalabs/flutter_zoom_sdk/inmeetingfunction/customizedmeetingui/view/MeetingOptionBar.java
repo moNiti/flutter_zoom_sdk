@@ -35,7 +35,10 @@ import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKPreProcessRawData;
 import us.zoom.sdk.ZoomSDKPreProcessor;
 import us.zoom.sdk.ZoomSDKVideoSourceHelper;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sennalabs.flutter_zoom_sdk.BuildConfig;
+import com.sennalabs.flutter_zoom_sdk.FlutterZoomSdkPlugin;
 import com.sennalabs.flutter_zoom_sdk.MyMeetingActivity;
 import com.sennalabs.flutter_zoom_sdk.R;
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.rawdata.VirtualVideoSource;
@@ -79,6 +82,12 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     private final int MENU_LIVE_TRANSCRIPTION_REQUEST = 22;
     private final int MENU_LIVE_TRANSCRIPTION_STOP = 23;
 
+    private final  int MENU_MEETING_PAPERS = 24;
+    private final  int MENU_VOTE= 25;
+    private final  int MENU_QUORUM= 26;
+
+
+
     MeetingOptionBarCallBack mCallBack;
 
     View mContentView;
@@ -95,8 +104,6 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     private ImageView mAudioStatusImg;
     private ImageView mVideoStatusImg;
     private ImageView mShareStatusImg;
-    private TextView mMeetingNumberText;
-    private TextView mMeetingPasswordText;
 
     private TextView mMeetingAudioText;
     private TextView mMeetingVideoText;
@@ -212,8 +219,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
         mBtnSwitchCamera = findViewById(R.id.btnSwitchCamera);
         mBtnSwitchCamera.setOnClickListener(this);
 
-        mMeetingNumberText = findViewById(R.id.meetingNumber);
-        mMeetingPasswordText = findViewById(R.id.txtPassword);
+
+
 
 
         findViewById(R.id.btnBack).setOnClickListener(this);
@@ -261,22 +268,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
         return mBtnSwitchCamera;
     }
 
-    public void updateMeetingNumber(String text) {
-        if (null != mMeetingNumberText) {
-            mMeetingNumberText.setText(text);
-        }
-    }
 
-    public void updateMeetingPassword(String text) {
-        if (null != mMeetingPasswordText) {
-            if (!TextUtils.isEmpty(text)) {
-                mMeetingPasswordText.setVisibility(VISIBLE);
-                mMeetingPasswordText.setText(text);
-            }else {
-                mMeetingPasswordText.setVisibility(GONE);
-            }
-        }
-    }
+
 
     public void refreshToolbar() {
         updateAudioButton();
@@ -434,6 +427,12 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     VirtualVideoSource virtualVideoSource;
     private void showMoreMenuPopupWindow() {
         final SimpleMenuAdapter menuAdapter = new SimpleMenuAdapter(mContext);
+        //  CUSTOM MEETING FOR LIVLY APP <3
+        menuAdapter.addItem((new SimpleMenuItem(MENU_MEETING_PAPERS, "เอกสารการประชุม")));
+        menuAdapter.addItem((new SimpleMenuItem(MENU_VOTE, "ลงคะแนนเสียง")));
+        menuAdapter.addItem((new SimpleMenuItem(MENU_QUORUM, "องค์ประชุม/ผลการลงคะแนน")));
+        //  END CUSTOM MEETING FOR LIVLY APP <3
+
         if (mInMeetingAudioController.isAudioConnected()) {
             menuAdapter.addItem(new SimpleMenuItem(MENU_DISCONNECT_AUDIO, "Disconnect Audio"));
         }
@@ -534,7 +533,6 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
         shareActions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 SimpleMenuItem item = (SimpleMenuItem) menuAdapter.getItem(position);
 
                 switch (item.getAction()) {
@@ -578,7 +576,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                         break;
                     }
                     case MENU_ANNOTATION_QA: {
-                        mContext.startActivity(new Intent(mContext, QAActivity.class));
+                        mInMeetingService.showZoomQAUI((MyMeetingActivity) mContext, MENU_ANNOTATION_QA);
                         break;
                     }
                     case MENU_SWITCH_DOMAIN: {
@@ -646,6 +644,22 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                     }
                     case MENU_LIVE_TRANSCRIPTION_STOP: {
                         mInMeetingService.getInMeetingLiveTranscriptionController().stopLiveTranscription();
+                        break;
+                    }
+                    case MENU_MEETING_PAPERS: {
+                        System.out.println("เอกสารการประชุม press");
+                        break;
+                    }
+                    case MENU_VOTE: {
+                        System.out.println("ลงคแนนเสียง press");
+                        FlutterZoomSdkPlugin.fetchData();
+                        break;
+                    }
+                    case MENU_QUORUM: {
+                        System.out.println("องค์ประชุม press");
+                        BottomSheetDialog bottomSheet = new BottomSheetDialog(mContext);
+                        bottomSheet.setContentView(R.layout.meeting_papers_bottom_sheet_layout);
+                        bottomSheet.show();
                         break;
                     }
                 }

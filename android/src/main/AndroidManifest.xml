@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sennalabs.flutter_zoom_sdk">
 
     <uses-feature android:glEsVersion="0x00020000" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application>
-
-
         <activity
-            android:name="com.sennalabs.flutter_zoom_sdk.MyMeetingActivity"
+            android:name=".MyOverlayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyMeetingActivity"
             android:configChanges="screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/ZMTheme.SubWindow" />
-
-
         <activity
             android:name=".inmeetingfunction.customizedmeetingui.RawDataMeetingActivity"
             android:configChanges="screenSize|orientation|keyboardHidden|keyboard"
@@ -32,7 +33,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity
-            android:name="com.sennalabs.flutter_zoom_sdk.inmeetingfunction.zoommeetingui.CustomZoomUIActivity"
+            android:name=".inmeetingfunction.zoommeetingui.CustomZoomUIActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:theme="@style/ZMTheme.SubWindow" />

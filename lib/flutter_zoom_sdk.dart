@@ -1,26 +1,53 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'model/init_params.dart';
 import 'model/join_meeting_params.dart';
 
 class FlutterZoomSdk {
-  static const MethodChannel _channel = MethodChannel('flutter_zoom_sdk');
-  static const EventChannel _eventChannel =
-      EventChannel('flutter_zoom_sdk_event_stream');
+  static final FlutterZoomSdk _flutterZoomSdk = FlutterZoomSdk._internal();
 
-  static Future<dynamic> initZoom(InitParams initParams) async {
+  factory FlutterZoomSdk() {
+    return _flutterZoomSdk;
+  }
+  FlutterZoomSdk._internal() {
+    _channel = MethodChannel('flutter_zoom_sdk');
+    _eventChannel = EventChannel('flutter_zoom_sdk_event_stream');
+  }
+  late MethodChannel _channel;
+  late EventChannel _eventChannel;
+
+  // static const MethodChannel _channel = MethodChannel('flutter_zoom_sdk')
+  //   ..setMethodCallHandler((call) => null);
+  // static const EventChannel _eventChannel =
+  //     EventChannel('flutter_zoom_sdk_event_stream');
+
+  Future<dynamic> initZoom(InitParams initParams) async {
+    _channel.setMethodCallHandler(methodHandler);
     return await _channel.invokeMethod('init', initParams.toMap());
   }
 
-  static Future<bool> joinMeeting(JoinMeetingParams joinParams) async {
+  Future<bool> joinMeeting(JoinMeetingParams joinParams) async {
     return _channel
         .invokeMethod<bool>('join', joinParams.toMap())
         .then<bool>((bool? value) => value ?? false);
   }
 
-  static Stream<dynamic> onMeetingStatus() {
+  Stream<dynamic> onMeetingStatus() {
     return _eventChannel.receiveBroadcastStream();
+  }
+
+  Future<dynamic> methodHandler(MethodCall call) async {
+    print('======>SET METHOD CALL HANDLER');
+
+    switch (call.method) {
+      case "testCallMethod":
+        await Future.delayed(Duration(seconds: 5));
+        debugPrint('CALL `testCallMethod` from android an');
+        return "CALLBACK FROM FLUTTER";
+      default:
+    }
   }
 }

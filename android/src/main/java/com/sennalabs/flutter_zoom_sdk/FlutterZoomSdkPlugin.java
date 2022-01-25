@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.other.MeetingCommonCallback;
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.MeetingWindowHelper;
 
 import java.util.Arrays;
@@ -22,7 +23,9 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingNotificationHandle;
+import us.zoom.sdk.InMeetingService;
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
@@ -43,9 +46,12 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
-    private MethodChannel channel;
+    private static MethodChannel channel;
     private Context context;
     private EventChannel meetingStatusChannel;
+
+    static String displayName;
+    static String email;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -54,6 +60,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk");
         channel.setMethodCallHandler(this);
         meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk_event_stream");
+
     }
 
     @Override
@@ -159,6 +166,8 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         MeetingService meetingService = zoomSDK.getMeetingService();
 
 //        JoinMeetingOptions opts = new JoinMeetingOptions();
+//        opts.no_webinar_register_dialog = true;
+//        opts.no_webinar_register_dialog =
 //        opts.no_invite = false;
 //        opts.no_share = parseBoolean(options, "disableShare");
 //        opts.no_titlebar =  parseBoolean(options, "disableTitlebar");
@@ -188,18 +197,39 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         params.webinarToken = options.get("webinarToken");
         params.password = options.get("password");
 
+
+        this.displayName =  options.get("displayName");
+        this.email =  options.get("email");
+
         ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(true);
         ZoomSDK.getInstance().getSmsService().enableZoomAuthRealNameMeetingUIShown(false);
         meetingService.joinMeetingWithParams(context, params, null);
-        MeetingStatus status =   meetingService.getMeetingStatus();
-
+        MeetingStatus status = meetingService.getMeetingStatus();
 
         System.out.println("STAUTS =>>>>>>>>>>>>" + status);
 
         result.success(true);
     }
 
+    public static void fetchData() {
+        channel.invokeMethod("testCallMethod", "hello", new Result() {
+            @Override
+            public void success(Object o) {
+                // this will be called with o = "some string"
+                System.out.println("SUCCES FROM ANDROID WITH DATA");
+                System.out.println(o.toString());
 
+            }
+
+            @Override
+            public void error(String s, String s1, Object o) {
+            }
+
+            @Override
+            public void notImplemented() {
+            }
+        });
+    }
 
 
     @Override

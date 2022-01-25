@@ -78,6 +78,7 @@ import us.zoom.sdk.SmsListener;
 import us.zoom.sdk.SmsService;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKCountryCode;
+
 import com.sennalabs.flutter_zoom_sdk.R;
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.audio.MeetingAudioCallback;
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.audio.MeetingAudioHelper;
@@ -170,7 +171,9 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     private MobileRTCShareView mShareView;
     private AnnotateToolbar mDrawingView;
     private FrameLayout mMeetingVideoView;
-    private ImageView mViewApps;
+
+    private TextView mMeetingNameText;
+
 
     private View mNormalSenceView;
 
@@ -222,8 +225,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
         mMeetingVideoView = (FrameLayout) findViewById(R.id.meetingVideoView);
         mShareView = (MobileRTCShareView) findViewById(R.id.sharingView);
         mDrawingView = (AnnotateToolbar) findViewById(R.id.drawingView);
-        mViewApps = findViewById(R.id.iv_view_apps);
-        mViewApps.setOnClickListener(this);
+
         mWaitJoinView = (View) findViewById(R.id.waitJoinView);
         mWaitRoomView = (View) findViewById(R.id.waitingRoom);
 
@@ -253,6 +255,8 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
         mBtnJoinBo.setOnClickListener(this);
         mBtnRequestHelp.setOnClickListener(this);
+
+        mMeetingNameText = findViewById(R.id.meetingNameText);
 
         refreshToolbar();
     }
@@ -334,15 +338,9 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
                 boAttendee.joinBo();
         } else if (id == R.id.btn_request_help) {
             attendeeRequestHelp();
-        } else if (id == R.id.iv_view_apps) {
-            showApps();
         }
     }
 
-    private void showApps() {
-        InMeetingAANController aanController = ZoomSDK.getInstance().getInMeetingService().getInMeetingAANController();
-        aanController.showAANPanel(this);
-    }
 
     private boolean checkVideoPermission() {
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -391,10 +389,9 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     private void refreshToolbar() {
         if (mMeetingService.getMeetingStatus() == MeetingStatus.MEETING_STATUS_INMEETING) {
             mConnectingText.setVisibility(View.GONE);
-            meetingOptionBar.updateMeetingNumber(mInMeetingService.getCurrentMeetingNumber() + "");
-            meetingOptionBar.updateMeetingPassword(mInMeetingService.getMeetingPassword());
+            updateMeetingName(mInMeetingService.getCurrentMeetingTopic());
             meetingOptionBar.refreshToolbar();
-            mViewApps.setVisibility(View.VISIBLE);
+
         } else {
             if (mMeetingService.getMeetingStatus() == MeetingStatus.MEETING_STATUS_CONNECTING) {
                 mConnectingText.setVisibility(View.VISIBLE);
@@ -549,7 +546,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
     private void showPreviewLayout() {
         MobileRTCVideoUnitRenderInfo renderInfo1 = new MobileRTCVideoUnitRenderInfo(0, 0, 100, 100);
-        mDefaultVideoView.setVisibility(View.VISIBLE);
+        mDefaultVideoView.setVisibility(View.GONE);
         mDefaultVideoViewMgr.addPreviewVideoUnit(renderInfo1);
         videoListLayout.setVisibility(View.GONE);
     }
@@ -959,7 +956,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     }
 
     private void showLeaveMeetingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         if (mInMeetingService.isMeetingConnected()) {
             if (mInMeetingService.isMeetingHost()) {
                 builder.setTitle("End or leave meeting")
@@ -1233,9 +1230,12 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
     @Override
     public void onJoinWebinarNeedUserNameAndEmail(InMeetingEventHandler inMeetingEventHandler) {
-        long time = System.currentTimeMillis();
-//        showWebinarNeedRegisterDialog(inMeetingEventHandler);
-        inMeetingEventHandler.setRegisterWebinarInfo("test", time+"@example.com", false);
+        String displayName = FlutterZoomSdkPlugin.displayName;
+        String email = FlutterZoomSdkPlugin.email;
+
+        if(displayName != null && email != null) {
+            inMeetingEventHandler.setRegisterWebinarInfo(displayName, email, false);
+        }
     }
 
     @Override
@@ -1364,7 +1364,6 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
             if (boController.isInBOMeeting()) {
                 mBtnJoinBo.setVisibility(View.GONE);
                 mBtnRequestHelp.setVisibility(iboAttendee.isHostInThisBO() ? View.GONE : View.VISIBLE);
-                meetingOptionBar.updateMeetingNumber(iboAttendee.getBoName());
             } else {
                 mBtnRequestHelp.setVisibility(View.GONE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(com.sennalabs.flutter_zoom_sdk.MyMeetingActivity.this)
@@ -1412,14 +1411,6 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     private IBODataEvent iboDataEvent = new IBODataEvent() {
         @Override
         public void onBOInfoUpdated(String strBOID) {
-            InMeetingBOController boController = mInMeetingService.getInMeetingBOController();
-            IBOData iboData = boController.getBODataHelper();
-            if (iboData != null) {
-                String boName = iboData.getCurrentBoName();
-                if (!TextUtils.isEmpty(boName)) {
-                    meetingOptionBar.updateMeetingNumber(boName);
-                }
-            }
         }
 
         @Override
@@ -1612,5 +1603,11 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
             Log.d(TAG, "onRequestLiveTranscriptionStatusChange: " + enabled);
         }
     };
+
+    public void updateMeetingName(String text) {
+        if (null != mMeetingNameText) {
+            mMeetingNameText.setText(text);
+        }
+    }
 }
 
