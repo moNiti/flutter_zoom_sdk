@@ -4,9 +4,9 @@
         <!-- Used for the buttons -->
         <item name="colorAccent">@color/zm_text_blue</item>
         <!-- Used for the title and text -->
-        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
         <!-- Used for the background -->
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@android:color/white</item>
 
     </style>
 </resources>
