@@ -134,6 +134,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
                     return;
                 }
 
+
                 ZoomSDK zoomSDK = ZoomSDK.getInstance();
                 ZoomSDK.getInstance().getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
                 ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedNotificationData(null, handle);
@@ -198,12 +199,14 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         params.password = options.get("password");
 
 
-        this.displayName =  options.get("displayName");
-        this.email =  options.get("email");
+        this.displayName = options.get("displayName");
+        this.email = options.get("email");
+
 
         ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(true);
         ZoomSDK.getInstance().getSmsService().enableZoomAuthRealNameMeetingUIShown(false);
         meetingService.joinMeetingWithParams(context, params, null);
+
         MeetingStatus status = meetingService.getMeetingStatus();
 
         System.out.println("STAUTS =>>>>>>>>>>>>" + status);
