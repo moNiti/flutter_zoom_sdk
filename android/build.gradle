@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.2.0'
     }
 }
 
@@ -18,9 +18,9 @@ rootProject.allprojects {
         google()
 //        mavenCentral()
         jcenter()
-        flatDir {
-            dirs 'libs'
-        }
+       flatDir {
+           dirs 'libs'
+       }
     }
 }
 
@@ -33,9 +33,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+  
     defaultConfig {
         minSdkVersion 21
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        consumerProguardFiles 'proguard.txt'
     }
     buildFeatures {
         viewBinding true
@@ -73,6 +76,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 
-    implementation fileTree(dir: 'libs', include: ['*.aar'])
-
+//    implementation fileTree(dir: 'libs', include: ['*.aar'])
+     compile(name:'commonlib', ext:'aar') 
+     compile(name:'mobilertc', ext:'aar')
 }

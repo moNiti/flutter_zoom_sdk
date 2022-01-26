@@ -33,3 +33,5 @@ android/*.hprof
 ios/MobileRTC.xcframework/*
 ios/MobileRTCResources.bundle/*
 ios/MobileRTCScreenShare.xcframework/*
+example/android/app/libs/commonlib.aar
+example/android/app/libs/mobilertc.aar
