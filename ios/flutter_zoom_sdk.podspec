@@ -23,6 +23,5 @@ A new flutter plugin project.
 
   s.preserve_paths = 'MobileRTC.xcframework', 'MobileRTCResources.bundle'
   s.vendored_frameworks = 'MobileRTC.xcframework'
-  # s.resource = 'MobileRTCResources.bundle'
-  s.resource_bundles= {'MobileRTCResources' => 'MobileRTCResources.bundle'}
+  s.resource = 'MobileRTCResources.bundle'
 end

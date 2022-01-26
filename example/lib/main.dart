@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-  await FlutterZoomSdk().initZoom(InitParams(
+  bool result = await FlutterZoomSdk().initZoom(InitParams(
       appKey: dotenv.env['ZOOM_KEY']!,
       appSecret: dotenv.env['ZOOM_SECRET']!,
       domain: dotenv.env['ZOOM_DOMAIN']!));
@@ -49,9 +49,9 @@ class _MyAppState extends State<MyApp> {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "98375897472",
+                      meetingNo: "94528068774",
                       email: "momo_niti@hotmail.com",
-                      password: "473058",
+                      password: "552620",
                       webinarToken:
                           "pnGVRL_fX4qP4fM6ycl7VtV4m9cnIKUrWaqb9Mak8vQ.DQMAAAAVcNbqURZVczFjRTQ5U1RmYWlfWUF2cmtiMExBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));
