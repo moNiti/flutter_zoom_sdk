@@ -19,8 +19,8 @@ rootProject.allprojects {
 //        mavenCentral()
         jcenter()
        flatDir {
-           dirs 'libs'
-       }
+            dirs project(':flutter_zoom_sdk').file('libs')
+        }
     }
 }
 
