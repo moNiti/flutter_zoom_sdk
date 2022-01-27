@@ -67,8 +67,10 @@
 -(void) join:(FlutterMethodCall *)call withResult:(FlutterResult) result {
     MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
     
+    
     if (ms)
     {
+        
         ms.delegate = self;
         
         //For Join a meeting with password
@@ -77,6 +79,13 @@
         joinParam.meetingNumber =  call.arguments[@"meetingNo"];
         joinParam.password =  call.arguments[@"password"];
         joinParam.webinarToken =  call.arguments[@"webinarToken"];;
+//        ENABLE CUSTOMIZE MEETING BEFORE JOIN
+        [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
+//        WEBINAR NEED REGISTER
+        self.displayName = call.arguments[@"displayName"];
+        self.email = call.arguments[@"email"];
+
+        
         MobileRTCMeetError ret = [ms joinMeetingWithJoinParam:joinParam];
         
         NSLog(@"MobileRTC onJoinaMeeting ret: %@", ret == MobileRTCMeetError_Success ? @"Success" : @(ret));
@@ -180,4 +189,35 @@
     
 }
 
-@end
+#pragma mark - Customize UI implement
+- (void)onInitMeetingView {
+    NSLog(@"onInitMeetingView....");
+    CustomMeetingViewController *vc = [[CustomMeetingViewController alloc] init];
+    UIViewController *rootVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    self.customMeetingVC = vc;
+    [rootVC addChildViewController:self.customMeetingVC];
+    [rootVC.view addSubview:self.customMeetingVC.view];
+    [self.customMeetingVC didMoveToParentViewController:rootVC];
+        
+    self.customMeetingVC.view.frame = rootVC.view.bounds;
+    
+}
+- (void)onDestroyMeetingView {
+    
+    NSLog(@"onDestroyMeetingView....");
+    
+    [self.customMeetingVC willMoveToParentViewController:nil];
+    [self.customMeetingVC.view removeFromSuperview];
+    [self.customMeetingVC removeFromParentViewController];
+    self.customMeetingVC = nil;
+}
+
+
+- (void)onSinkJoinWebinarNeedUserNameAndEmailWithCompletion:(BOOL (^_Nonnull)(NSString * _Nonnull username, NSString * _Nonnull email, BOOL cancel))completion
+{
+    if (completion)
+    {
+        BOOL ret = completion(self.displayName, self.email, NO);
+        NSLog(@"%zd",ret);
+    }
+}@end
