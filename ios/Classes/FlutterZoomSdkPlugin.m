@@ -7,16 +7,15 @@
 
 
 @implementation FlutterZoomSdkPlugin
-// + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-//   [SwiftFlutterZoomSdkPlugin registerWithRegistrar:registrar];
-// }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    
   FlutterMethodChannel* channel = [FlutterMethodChannel
       methodChannelWithName:@"flutter_zoom_sdk"
             binaryMessenger:[registrar messenger]];
   FlutterZoomSdkPlugin* instance = [[FlutterZoomSdkPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
+    [registrar addApplicationDelegate:instance];
     
     
     FlutterEventChannel* eventChannel = [FlutterEventChannel
@@ -67,12 +66,9 @@
 -(void) join:(FlutterMethodCall *)call withResult:(FlutterResult) result {
     MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
     
-    
     if (ms)
     {
-        
         ms.delegate = self;
-        
         //For Join a meeting with password
         MobileRTCMeetingJoinParam * joinParam = [[MobileRTCMeetingJoinParam alloc] init];
         joinParam.userName =  call.arguments[@"displayName"];
@@ -81,15 +77,15 @@
         joinParam.webinarToken =  call.arguments[@"webinarToken"];;
 //        ENABLE CUSTOMIZE MEETING BEFORE JOIN
         [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
+        ms.customizedUImeetingDelegate = self;
 //        WEBINAR NEED REGISTER
         self.displayName = call.arguments[@"displayName"];
         self.email = call.arguments[@"email"];
 
         
         MobileRTCMeetError ret = [ms joinMeetingWithJoinParam:joinParam];
-        
         NSLog(@"MobileRTC onJoinaMeeting ret: %@", ret == MobileRTCMeetError_Success ? @"Success" : @(ret));
-
+        
     }
 }
 
@@ -190,15 +186,17 @@
 }
 
 #pragma mark - Customize UI implement
+
 - (void)onInitMeetingView {
-    NSLog(@"onInitMeetingView....");
+    NSLog(@" =>>>>>>>>>>>>>>========= >>onInitMeetingView....");
     CustomMeetingViewController *vc = [[CustomMeetingViewController alloc] init];
-    UIViewController *rootVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     self.customMeetingVC = vc;
+   
+    UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
     [rootVC addChildViewController:self.customMeetingVC];
     [rootVC.view addSubview:self.customMeetingVC.view];
     [self.customMeetingVC didMoveToParentViewController:rootVC];
-        
+    
     self.customMeetingVC.view.frame = rootVC.view.bounds;
     
 }
@@ -212,6 +210,7 @@
     self.customMeetingVC = nil;
 }
 
+#pragma mark - WEBINAR NEED EMAIL implement
 
 - (void)onSinkJoinWebinarNeedUserNameAndEmailWithCompletion:(BOOL (^_Nonnull)(NSString * _Nonnull username, NSString * _Nonnull email, BOOL cancel))completion
 {
