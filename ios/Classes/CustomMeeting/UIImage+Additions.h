@@ -12,4 +12,6 @@
 
 + (UIImage*)imageWithUIColor:(UIColor*)color;
 
++ (UIImage*)imageNamed:(NSString *)name;
+
 @end

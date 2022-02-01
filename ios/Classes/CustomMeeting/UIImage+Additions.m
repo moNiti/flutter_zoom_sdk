@@ -24,5 +24,10 @@
     
     return image;
 }
+//
++ (UIImage*)imageNamed:(NSString *)name {
+    UIImage *aImage = [UIImage imageNamed:name inBundle:[NSBundle bundleWithIdentifier:@"org.cocoapods.flutter-zoom-sdk"] withConfiguration:nil];
+    return aImage;
+}
 
 @end

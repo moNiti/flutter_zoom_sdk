@@ -96,8 +96,7 @@ const CGFloat TOP_BTN_LENGTH = 40;
 
         _shrinkBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 40, TOP_BTN_LENGTH, TOP_BTN_LENGTH)];
         
-    
-        [_shrinkBtn setImage:[UIImage imageNamed:@"icon_shrink" ] forState:UIControlStateNormal];
+        [_shrinkBtn setImage:[UIImage imageNamed:@"icon_shrink"] forState:UIControlStateNormal];
 
         _shrinkBtn.tag = kTagButtonShrink;
         [_shrinkBtn addTarget:self action:@selector(onTopButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
