@@ -219,4 +219,49 @@
         BOOL ret = completion(self.displayName, self.email, NO);
         NSLog(@"%zd",ret);
     }
-}@end
+}
+
+#pragma mark - WATING ROOM
+- (void)onJBHWaitingWithCmd:(JBHCmd)cmd {
+    NSLog(@"=>>>>>> CALL ON JBHWaitingWithCmd");
+    UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
+    
+//
+//    self.customMeetingVC.view.frame = rootVC.view.bounds;
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    switch (cmd) {
+        case JBHCmd_Show:
+        {
+            // Get view controller.
+            UIViewController *vc = [UIViewController new];
+            
+            // CREATE Waiting Label.
+            UILabel *_titleLabel = [[UILabel alloc] initWithFrame: CGRectMake((rootVC.view.frame.size.width-120)/2, 30, 120, 40)];
+            _titleLabel.textAlignment = NSTextAlignmentCenter;
+            _titleLabel.textColor = [UIColor whiteColor];
+            _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+            _titleLabel.text = @"กำลังเข้าสู่ห้องประชุม...";
+            [_titleLabel sizeToFit];
+      
+//            ADD SUB VIEW
+            [vc.view addSubview:_titleLabel];
+
+            // Change modal present style.
+            vc.modalPresentationStyle = UIModalPresentationFullScreen;
+            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
+            [rootVC presentViewController:vc animated:YES completion:nil];
+            vc.view.frame = rootVC.view.bounds;
+        }
+            break;
+            
+        case JBHCmd_Hide:
+        default:
+        {
+            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
+            [rootVC dismissViewControllerAnimated:YES completion:NULL];
+        }
+            break;
+    }
+}
+
+@end

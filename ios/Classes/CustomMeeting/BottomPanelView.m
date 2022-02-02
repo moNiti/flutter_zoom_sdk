@@ -886,6 +886,7 @@
 
 - (void)updateMyAudioStatus
 {
+    NSLog(@"=>>>>>> UPDATE MY AUDIO STATUS");
     MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
     if (!ms) return;
     

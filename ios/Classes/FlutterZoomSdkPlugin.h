@@ -7,8 +7,10 @@
 
 @property (strong, nonatomic) FlutterEventSink eventSink;
 @property (strong, nonatomic) CustomMeetingViewController *customMeetingVC;
+@property (strong, nonatomic) UIViewController *waitingVC;
 @property (strong, nonatomic) NSString *displayName;
 @property (strong, nonatomic) NSString *email;
+
 
 
 -(void) init:(FlutterMethodCall *)call withResult:(FlutterResult) result;

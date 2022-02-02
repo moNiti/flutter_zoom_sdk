@@ -137,11 +137,11 @@
     self.isShowTopBottonPanel = !self.isShowTopBottonPanel;
 }
 
-//- (void)showAttendeeVideo:(MobileRTCVideoView*)videoView withUserID:(NSUInteger)userID
-//{
-//    [videoView showAttendeeVideoWithUserID:userID];
-//    [videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
-//}
+- (void)showAttendeeVideo:(MobileRTCVideoView*)videoView withUserID:(NSUInteger)userID
+{
+    [videoView showAttendeeVideoWithUserID:userID];
+    [videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
+}
 
 - (void)updateVideoOrShare
 {
