@@ -145,6 +145,7 @@
 
 - (void)updateVideoOrShare
 {
+    NSLog(@"CALL UPDATE VIDEO OR SHARE");
     if (self.remoteShareVC.parentViewController)
     {
         [self.remoteShareVC updateShareView];
@@ -152,9 +153,11 @@
     
     [self.thumbView updateThumbViewVideo];
     if (self.pinUserId) {
-        [self.videoVC.videoView showAttendeeVideoWithUserID:self.pinUserId];
+        bool result = [self.videoVC.videoView showAttendeeVideoWithUserID:self.pinUserId];
+        NSLog(@"SHOW PINUSER RESULT => %d", result);
     } else {
-        [self.videoVC.videoView showAttendeeVideoWithUserID:[[[MobileRTC sharedRTC] getMeetingService] myselfUserID]];
+        bool result = [self.videoVC.videoView showAttendeeVideoWithUserID:[[[MobileRTC sharedRTC] getMeetingService] myselfUserID]];
+        NSLog(@"SHOW MYSELF RESULT => %d", result);
     }
 }
 
@@ -194,12 +197,14 @@
 
 - (void)showVideoView
 {
+    NSLog(@"=>>>> ShowVideoView");
     [self removeAllSubView];
     [self showSubView:self.videoVC];
 }
 
 - (void)showLocalShareView
 {
+    NSLog(@"=>>>> showLocalShareView");
     [self removeAllSubView];
     [self showSubView:self.localShareVC];
     [[[MobileRTC sharedRTC] getMeetingService] appShareWithView:self.localShareVC.view];
@@ -210,6 +215,7 @@
 
 - (void)showRemoteShareView
 {
+    NSLog(@"=>>>>> showRemoteShareView");
     [self removeAllSubView];
     [self showSubView:self.remoteShareVC];
     
@@ -322,6 +328,16 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}
+
+- (SDKActionPresenter *)actionPresenter
+{
+    if (!_actionPresenter)
+    {
+        _actionPresenter = [[SDKActionPresenter alloc] init];
+     
+    }
+    return _actionPresenter;
 }
 
 
@@ -525,6 +541,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
 @end
 

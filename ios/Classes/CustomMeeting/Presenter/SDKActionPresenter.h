@@ -21,6 +21,8 @@
 - (BOOL)lockMeeting;
 
 - (BOOL)lockShare;
+
+- (void)presentChatViewController;
 @end
 
 

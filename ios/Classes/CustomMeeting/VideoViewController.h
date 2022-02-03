@@ -12,6 +12,6 @@
 
 @interface VideoViewController : UIViewController
 @property (strong, nonatomic) MobileRTCPreviewVideoView  * preVideoView;
-@property (strong, nonatomic) MobileRTCVideoView        * videoView;
+@property (strong, nonatomic) MobileRTCActiveVideoView        * videoView;
 @end
 

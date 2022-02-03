@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.videoView];
     
     [self.view addSubview:self.preVideoView];
@@ -46,11 +47,11 @@
     self.videoView.frame = frame;
 }
 
-- (MobileRTCVideoView*)videoView
+- (MobileRTCActiveVideoView*)videoView
 {
     if (!_videoView)
     {
-        _videoView = [[MobileRTCVideoView alloc] initWithFrame:self.view.bounds];
+        _videoView = [[MobileRTCActiveVideoView alloc] initWithFrame:self.view.bounds];
         [_videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
     }
     return _videoView;

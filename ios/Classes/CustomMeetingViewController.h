@@ -16,6 +16,8 @@
 #import "VideoViewController.h"
 #import "AnnoFloatBarView.h"
 #import "Sample-Prefix.h"
+#import "SDKActionPresenter.h"
+
 
 @interface CustomMeetingViewController : UIViewController
 
@@ -36,6 +38,8 @@
 @property (strong, nonatomic) LocalShareViewController      * localShareVC;
 
 @property (strong, nonatomic) AnnoFloatBarView * annoFloatBarView;
+
+@property (strong, nonatomic) SDKActionPresenter     *actionPresenter;
 
 
 - (void)updateVideoOrShare;

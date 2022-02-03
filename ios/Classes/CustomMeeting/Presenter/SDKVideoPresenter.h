@@ -22,5 +22,7 @@
 // only meeting host can run this function.
 - (BOOL)askUserStartVideo:(NSUInteger)userID;
 
+-(BOOL) isOnCamera;
+
 @end
 

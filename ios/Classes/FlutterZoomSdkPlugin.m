@@ -69,6 +69,7 @@
     if (ms)
     {
         ms.delegate = self;
+        ms.customizedUImeetingDelegate = self;
         //For Join a meeting with password
         MobileRTCMeetingJoinParam * joinParam = [[MobileRTCMeetingJoinParam alloc] init];
         joinParam.userName =  call.arguments[@"displayName"];
@@ -77,7 +78,7 @@
         joinParam.webinarToken =  call.arguments[@"webinarToken"];;
 //        ENABLE CUSTOMIZE MEETING BEFORE JOIN
         [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
-        ms.customizedUImeetingDelegate = self;
+       
 //        WEBINAR NEED REGISTER
         self.displayName = call.arguments[@"displayName"];
         self.email = call.arguments[@"email"];
@@ -158,6 +159,9 @@
 
 #pragma mark - FlutterEventSink
 -(void)onMeetingStateChange:(MobileRTCMeetingState)state{
+    if (state == MobileRTCMeetingState_InMeeting) {
+           [self.customMeetingVC.videoVC.preVideoView removeFromSuperview];
+    }
     _eventSink([self getStateMessage:state]);
 }
 
@@ -182,7 +186,7 @@
     return nil;
 }
 - (void)onMeetingError:(MobileRTCMeetError)error message:(NSString *)message{
-    
+    NSLog(@"MEETING ERROR =>>>>>>> %@", message);
 }
 
 #pragma mark - Customize UI implement
@@ -264,4 +268,146 @@
     }
 }
 
+
+#pragma mark Meeting Delegate
+//- (void)onMeetingStateChange:(MobileRTCMeetingState)state
+//{
+//    NSLog(@"==========>onMeetingStateChange");
+//    if (state == MobileRTCMeetingState_InMeeting) {
+//        [self.customMeetingVC.videoVC.preVideoView removeFromSuperview];
+//    }
+//}
+
+
+- (void)onSinkMeetingActiveVideo:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingActiveVideo");
+    self.customMeetingVC.pinUserId = userID;
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onSinkMeetingPreviewStopped
+{
+    NSLog(@"==========>onSinkMeetingPreviewStopped");
+}
+
+- (void)onSinkMeetingAudioStatusChange:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingAudioStatusChange");
+    [self.customMeetingVC updateMyAudioStatus];
+
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onSinkMeetingMyAudioTypeChange
+{
+    NSLog(@"==========>onSinkMeetingMyAudioTypeChange");
+    [self.customMeetingVC updateMyAudioStatus];
+}
+
+- (void)onSinkMeetingVideoStatusChange:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingVideoStatusChange");
+    [self.customMeetingVC updateMyVideoStatus];
+
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onMyVideoStateChange
+{
+    NSLog(@"==========>onMyVideoStateChange");
+    [self.customMeetingVC updateMyVideoStatus];
+
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onSinkMeetingUserJoin:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingUserJoin");
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onSinkMeetingUserLeft:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingUserLeft");
+    [self.customMeetingVC updateVideoOrShare];
+}
+
+- (void)onSinkMeetingActiveShare:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingActiveShare");
+    [self.customMeetingVC updateMyShareStatus];
+    BOOL sharing = (0 != userID);
+    if (sharing)
+    {
+//        self.topPanelView.shrinkBtn.hidden = YES;
+        MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+        //Local Side Share
+        if ([ms isSameUser:[ms myselfUserID] compareTo:userID])
+        {
+            [self.customMeetingVC showLocalShareView];
+        }
+        //Remote Side Share
+        else
+        {
+            self.customMeetingVC.remoteShareVC.activeShareID = userID;
+            [self.customMeetingVC showRemoteShareView];
+        }
+    }
+    else
+    {
+//        self.topPanelView.shrinkBtn.hidden = NO;
+        [self.customMeetingVC hideAnnotationView];
+        [self.customMeetingVC showVideoView];
+       
+    }
+}
+
+- (void)onSinkShareSizeChange:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkShareSizeChange");
+    if (!self.customMeetingVC.remoteShareVC.parentViewController)
+        return;
+
+    [self.customMeetingVC.remoteShareVC.shareView changeShareScaleWithUserID:userID];
+}
+
+- (void)onSinkMeetingShareReceiving:(NSUInteger)userID
+{
+    NSLog(@"==========>onSinkMeetingShareReceiving");
+    if (!self.customMeetingVC.remoteShareVC.parentViewController)
+        return;
+
+    [self.customMeetingVC.remoteShareVC.shareView changeShareScaleWithUserID:userID];
+}
+
+- (void)onWaitingRoomStatusChange:(BOOL)needWaiting
+{
+    NSLog(@"==========>onWaitingRoomStatusChange");
+    if (needWaiting)
+    {
+        UIViewController *vc = [UIViewController new];
+        
+        vc.title = @"Need wait for host Approve";
+        
+        UIBarButtonItem *leaveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Leave", @"") style:UIBarButtonItemStylePlain target:self action:@selector(onEndButtonClick:)];
+        [vc.navigationItem setRightBarButtonItem:leaveItem];
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.customMeetingVC presentViewController:nav animated:YES completion:NULL];
+        
+    }
+    else
+    {
+        [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
+    }
+}
+
+- (void)onEndButtonClick:(id)sender
+{
+    NSLog(@"==========>onEndButtonClick");
+    [self.customMeetingVC.actionPresenter leaveMeeting];
+    [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
+}
 @end

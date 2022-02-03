@@ -28,6 +28,7 @@ const CGFloat TOP_BTN_LENGTH = 40;
 
 - (id)initWithFrame:(CGRect)frame
 {
+    NSLog(@"======> CALL INIT WITH FRAME TOPPANELVIEW");
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -38,14 +39,16 @@ const CGFloat TOP_BTN_LENGTH = 40;
         self.gradientLayer.endPoint = CGPointMake(0.5, 1);
         self.gradientLayer.colors = @[(__bridge id)[UIColor colorWithWhite:0.f alpha:0.6].CGColor,
                                  (__bridge id)[UIColor colorWithWhite:0.f alpha:0.0].CGColor];
-
         [self addSubview:self.shrinkBtn];
+        
+      
+
         [self addSubview:self.cameraSwitchBtn];
         [self addSubview:self.titleLabel];
         [self addSubview:self.leaveBtn];
         
   
-        self.titleLabel.text = [[MobileRTCInviteHelper sharedInstance] ongoingMeetingNumber];
+        self.titleLabel.text = [[MobileRTCInviteHelper sharedInstance] ongoingMeetingTopic];
     }
     return self;
 }

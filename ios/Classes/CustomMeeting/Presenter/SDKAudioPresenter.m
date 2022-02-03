@@ -132,4 +132,12 @@
     return [[[MobileRTC sharedRTC] getMeetingService] muteAllUserAudio:allowSelfUnmute];
 }
 
+- (BOOL)isMute {
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    if(ms) {
+        return [ms isMyAudioMuted];
+
+    }
+        return NO;
+}
 @end

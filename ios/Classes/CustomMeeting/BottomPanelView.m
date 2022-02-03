@@ -65,7 +65,7 @@
         
         [self addSubview:self.audioButton];
         [self addSubview:self.videoButton];
-        [self addSubview:self.shareButton];
+//        [self addSubview:self.shareButton];
         [self addSubview:self.chatButton];
         [self addSubview:self.moreButton];
         
@@ -103,23 +103,23 @@
     
     float bottomButtonHeight = IPHONE_X ? 60 : Bottom_Height;
     
-    self.audioButton.frame = CGRectMake(0, 0, panelWidth/5, bottomButtonHeight);
+    self.audioButton.frame = CGRectMake(0, 0, panelWidth/4, bottomButtonHeight);
     [self.audioButton setTitleEdgeInsets:UIEdgeInsetsMake(_audioButton.imageView.frame.size.height ,-self.audioButton.imageView.frame.size.width, 0.0,0.0)];
     [self.audioButton setImageEdgeInsets:UIEdgeInsetsMake(-self.audioButton.imageView.frame.size.height/2, 0.0,0.0, -self.audioButton.titleLabel.bounds.size.width)];
     
-    self.videoButton.frame = CGRectMake(panelWidth/5, 0, panelWidth/5, bottomButtonHeight);
+    self.videoButton.frame = CGRectMake(panelWidth/4, 0, panelWidth/4, bottomButtonHeight);
     [self.videoButton setTitleEdgeInsets:UIEdgeInsetsMake(self.videoButton.imageView.frame.size.height ,-self.videoButton.imageView.frame.size.width, 0.0,0.0)];
     [self.videoButton setImageEdgeInsets:UIEdgeInsetsMake(-self.videoButton.imageView.frame.size.height/2, 0.0,0.0, -self.videoButton.titleLabel.bounds.size.width)];
     
-    self.shareButton.frame = CGRectMake(panelWidth*2/5, 0, panelWidth/5, bottomButtonHeight);
-    [self.shareButton setTitleEdgeInsets:UIEdgeInsetsMake(self.shareButton.imageView.frame.size.height ,-self.shareButton.imageView.frame.size.width, 0.0,0.0)];
-    [self.shareButton setImageEdgeInsets:UIEdgeInsetsMake(-self.shareButton.imageView.frame.size.height/2, 0.0,0.0, -self.shareButton.titleLabel.bounds.size.width)];
+//    self.shareButton.frame = CGRectMake(panelWidth*2/5, 0, panelWidth/5, bottomButtonHeight);
+//    [self.shareButton setTitleEdgeInsets:UIEdgeInsetsMake(self.shareButton.imageView.frame.size.height ,-self.shareButton.imageView.frame.size.width, 0.0,0.0)];
+//    [self.shareButton setImageEdgeInsets:UIEdgeInsetsMake(-self.shareButton.imageView.frame.size.height/2, 0.0,0.0, -self.shareButton.titleLabel.bounds.size.width)];
     
-    self.chatButton.frame = CGRectMake(panelWidth*3/5, 0, panelWidth/5, bottomButtonHeight);
+    self.chatButton.frame = CGRectMake(panelWidth*2/4, 0, panelWidth/4, bottomButtonHeight);
     [self.chatButton setTitleEdgeInsets:UIEdgeInsetsMake(self.chatButton.imageView.frame.size.height ,-self.chatButton.imageView.frame.size.width, 0.0,0.0)];
     [self.chatButton setImageEdgeInsets:UIEdgeInsetsMake(-self.chatButton.imageView.frame.size.height/2, 0.0,0.0, -self.chatButton.titleLabel.bounds.size.width)];
     
-    self.moreButton.frame = CGRectMake(panelWidth*4/5, 0, panelWidth/5, bottomButtonHeight);
+    self.moreButton.frame = CGRectMake(panelWidth*3/4, 0, panelWidth/4, bottomButtonHeight);
     [self.moreButton setTitleEdgeInsets:UIEdgeInsetsMake(self.moreButton.imageView.frame.size.height ,-self.moreButton.imageView.frame.size.width, 0.0,0.0)];
     [self.moreButton setImageEdgeInsets:UIEdgeInsetsMake(-self.moreButton.imageView.frame.size.height/2, 0.0,0.0, -self.moreButton.titleLabel.bounds.size.width)];
 }
@@ -147,12 +147,19 @@
     if (!_audioButton)
     {
         _audioButton = [[UIButton alloc] init];
-        [_audioButton setImage:[UIImage imageNamed:@"icon_meeting_audio"] forState:UIControlStateNormal];
-        [_audioButton setTitle:@"Mute" forState:UIControlStateNormal];
-        _audioButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
-        _audioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        
+        if([self.audioPresenter isMute]) {
+            [self.audioButton setImage:[UIImage imageNamed:@"icon_meeting_audio_mute"] forState:UIControlStateNormal];
+            [self.audioButton setTitle:@"Unmute" forState:UIControlStateNormal];
+        }
+        else {
+            [_audioButton setImage:[UIImage imageNamed:@"icon_meeting_audio"] forState:UIControlStateNormal];
+            [_audioButton setTitle:@"Mute" forState:UIControlStateNormal];
+        }
         _audioButton.tag = kTagButtonAudio;
         [_audioButton addTarget: self action: @selector(onBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        _audioButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
+        _audioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         
     }
     return _audioButton;
@@ -163,8 +170,17 @@
     if (!_videoButton)
     {
         _videoButton = [[UIButton alloc] init];
-        [_videoButton setImage:[UIImage imageNamed:@"icon_meeting_video"] forState:UIControlStateNormal];
-        [_videoButton setTitle:@"Stop Video" forState:UIControlStateNormal];
+        if(![self.videoPresenter isOnCamera])
+        {
+            [self.videoButton setImage:[UIImage imageNamed:@"icon_meeting_video_mute"] forState:UIControlStateNormal];
+            [self.videoButton setTitle:@"Start Video" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.videoButton setImage:[UIImage imageNamed:@"icon_meeting_video"] forState:UIControlStateNormal];
+            [self.videoButton setTitle:@"Stop Video" forState:UIControlStateNormal];
+        }
+        
         _videoButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
         _videoButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _videoButton.tag = kTagButtonVideo;
@@ -175,21 +191,21 @@
 }
 
 
-- (UIButton*)shareButton
-{
-    if (!_shareButton)
-    {
-        _shareButton = [[UIButton alloc] init];
-        [_shareButton setImage:[UIImage imageNamed:@"icon_meeting_share"] forState:UIControlStateNormal];
-        [_shareButton setTitle:@"Start Share" forState:UIControlStateNormal];
-        _shareButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
-        _shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        _shareButton.tag = kTagButtonShare;
-        [_shareButton addTarget: self action: @selector(onBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
-    }
-    return _shareButton;
-}
+//- (UIButton*)shareButton
+//{
+//    if (!_shareButton)
+//    {
+//        _shareButton = [[UIButton alloc] init];
+//        [_shareButton setImage:[UIImage imageNamed:@"icon_meeting_share"] forState:UIControlStateNormal];
+//        [_shareButton setTitle:@"Start Share" forState:UIControlStateNormal];
+//        _shareButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
+//        _shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+//        _shareButton.tag = kTagButtonShare;
+//        [_shareButton addTarget: self action: @selector(onBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    }
+//    return _shareButton;
+//}
 
 
 - (UIButton*)chatButton
@@ -198,7 +214,7 @@
     {
         _chatButton = [[UIButton alloc] init];
         [_chatButton setImage:[UIImage imageNamed:@"icon_meeting_attendee"] forState:UIControlStateNormal];
-        [_chatButton setTitle:@"Participants" forState:UIControlStateNormal];
+        [_chatButton setTitle:@"Chat" forState:UIControlStateNormal];
         _chatButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
         _chatButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _chatButton.tag = kTagButtonChat;
@@ -270,11 +286,13 @@
         case kTagButtonAudio:
         {
             [self.audioPresenter muteMyAudio];
+            [self updateMyAudioStatus];
             break;
         }
         case kTagButtonVideo:
         {
             [self.videoPresenter muteMyVideo];
+            [self updateMyVideoStatus];
             break;
         }
         case kTagButtonShare:
@@ -284,7 +302,7 @@
         }
         case kTagButtonChat:
         {
-            [self.actionPresenter presentParticipantsViewController];
+            [self.actionPresenter presentChatViewController];
             break;
         }
         case kTagButtonMore:
@@ -928,11 +946,13 @@
     BOOL sendingMyVideo = [ms isSendingMyVideo];
     if(!sendingMyVideo)
     {
+        NSLog(@"=>>>>>>1 UPDATE MY VIDEO STATUS");
         [self.videoButton setImage:[UIImage imageNamed:@"icon_meeting_video_mute"] forState:UIControlStateNormal];
         [self.videoButton setTitle:@"Start Video" forState:UIControlStateNormal];
     }
     else
     {
+        NSLog(@"=>>>>>2 UPDATE MY VIDEO STATUS");
         [self.videoButton setImage:[UIImage imageNamed:@"icon_meeting_video"] forState:UIControlStateNormal];
         [self.videoButton setTitle:@"Stop Video" forState:UIControlStateNormal];
     }

@@ -49,4 +49,10 @@
     return [ms lockShare:!ms.isShareLocked];
 }
 
+- (void)presentChatViewController
+{
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    topViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [[[MobileRTC sharedRTC] getMeetingService] presentMeetingChatViewController:topViewController userId:0];
+}
 @end

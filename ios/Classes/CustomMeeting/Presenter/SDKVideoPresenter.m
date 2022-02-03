@@ -47,4 +47,12 @@
     return [[[MobileRTC sharedRTC] getMeetingService] askUserStartVideo:userID];
 }
 
+-(BOOL) isOnCamera {
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    if(ms) {
+        return [ms isSendingMyVideo];
+    }else {
+        return NO;
+    }
+}
 @end

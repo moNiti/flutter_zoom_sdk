@@ -25,4 +25,6 @@
 
 // only meeting host can run this function.
 - (BOOL)muteAllUserAudio:(BOOL)allowSelfUnmute;
+
+- (BOOL)isMute;
 @end
