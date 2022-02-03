@@ -403,20 +403,20 @@
                                                           }]];
     }
     
-    if ([ms isSupportVirtualBG]) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Virtual Background"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-//                                                              AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-
-                                                              
-                                                              VBViewController *VC = [[VBViewController alloc] init];
-                                                              UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:VC];
-                                                              nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                                                              [ topViewController presentViewController:nav animated:YES completion:NULL];
-                                                          }]];
-    }
+//    if ([ms isSupportVirtualBG]) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Virtual Background"
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction *action) {
+////                                                              AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+//
+//                                                              
+//                                                              VBViewController *VC = [[VBViewController alloc] init];
+//                                                              UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:VC];
+//                                                              nav.modalPresentationStyle = UIModalPresentationFullScreen;
+//                                                              [ topViewController presentViewController:nav animated:YES completion:NULL];
+//                                                          }]];
+//    }
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Switch My Audio"
                                                         style:UIAlertActionStyleDefault
