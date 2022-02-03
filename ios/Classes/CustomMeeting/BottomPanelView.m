@@ -410,27 +410,27 @@
 ////                                                              AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //            UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
 //
-//                                                              
+//
 //                                                              VBViewController *VC = [[VBViewController alloc] init];
 //                                                              UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:VC];
 //                                                              nav.modalPresentationStyle = UIModalPresentationFullScreen;
 //                                                              [ topViewController presentViewController:nav animated:YES completion:NULL];
 //                                                          }]];
 //    }
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Switch My Audio"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-                                                          [self.audioPresenter switchMyAudioSource];
-                                                      }]];
+//
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"Switch My Audio"
+//                                                        style:UIAlertActionStyleDefault
+//                                                      handler:^(UIAlertAction *action) {
+//                                                          [self.audioPresenter switchMyAudioSource];
+//                                                      }]];
 
     if (ms)
     {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Dialing Room"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                                                            [self dialRoomFunction];
-                                                          }]];
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Dialing Room"
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction *action) {
+//                                                            [self dialRoomFunction];
+//                                                          }]];
         
         MobileRTCAudioType audioType = [self.audioPresenter myAudioType];
         if (audioType != MobileRTCAudioType_None)
@@ -531,33 +531,33 @@
         }
     }
     
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Show ANN Pannel"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-        MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-        [ms showAANPanelInView:self.superview originPoint:CGPointMake(20, 60)];
-    }]];
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"Show ANN Pannel"
+//                                                        style:UIAlertActionStyleDefault
+//                                                      handler:^(UIAlertAction *action) {
+//        MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+//        [ms showAANPanelInView:self.superview originPoint:CGPointMake(20, 60)];
+//    }]];
     
-    if ([ms isMeetingHost] && [ms isCMREnabled]) {
-        if (![ms isCMRInProgress]) {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Start Recording"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                [ms turnOnCMR:YES];
-            }]];
-        } else {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Stop Recording"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                [ms turnOnCMR:NO];
-            }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Pause/Resume Recording"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                [ms resumePauseCMR];
-            }]];
-        }
-    }
+//    if ([ms isMeetingHost] && [ms isCMREnabled]) {
+//        if (![ms isCMRInProgress]) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Start Recording"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                [ms turnOnCMR:YES];
+//            }]];
+//        } else {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Stop Recording"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                [ms turnOnCMR:NO];
+//            }]];
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Pause/Resume Recording"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                [ms resumePauseCMR];
+//            }]];
+//        }
+//    }
     
     NSString *raiseHandString = _isRaiseHand ? @"Lower My Hand" : @"Raise My Hand";
     [alertController addAction:[UIAlertAction actionWithTitle:raiseHandString
@@ -583,44 +583,44 @@
                                                         }]];
     }
     
-    if (![ms isChatDisabled]) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to all"
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action) {
-            MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_All WithContent:@"This is a group chat message that send to all"];
-            NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
-            
-            if (error == MobileRTCSendChatError_Successed && _firstSendChat == YES) {
-                if ([ms isMeetingChatLegalNoticeAvailable]) {
-                    _firstSendChat = NO;
-                    NSString *LegalNoticePromoteTitle = [ms getChatLegalNoticesPrompt];
-                    NSString *LegalNoticePromoteExplained = [ms getChatLegalNoticesExplained];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LegalNoticePromoteTitle message:LegalNoticePromoteExplained delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil, nil];
-                    [alert show];
-                }
-            }
-            
-                                                        }]];
-        if ([ms isWebinarMeeting]) {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to Panelists"
-                                                              style:UIAlertActionStyleDefault
-                                                            handler:^(UIAlertAction *action) {
-                MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_Panelists WithContent:@"This is a group chat message that send to Panelists"];
-                NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
-                                                            }]];
-        } else {
-            if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to Waiting Room"
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction *action) {
-                    MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_WaitingRoomUsers WithContent:@"This is a group chat message that send to Waiting Room"];
-                    NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
-
-                                                                }]];
-            }
-            
-        }
-    }
+//    if (![ms isChatDisabled]) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to all"
+//                                                          style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction *action) {
+//            MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_All WithContent:@"This is a group chat message that send to all"];
+//            NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
+//
+//            if (error == MobileRTCSendChatError_Successed && _firstSendChat == YES) {
+//                if ([ms isMeetingChatLegalNoticeAvailable]) {
+//                    _firstSendChat = NO;
+//                    NSString *LegalNoticePromoteTitle = [ms getChatLegalNoticesPrompt];
+//                    NSString *LegalNoticePromoteExplained = [ms getChatLegalNoticesExplained];
+//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LegalNoticePromoteTitle message:LegalNoticePromoteExplained delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil, nil];
+//                    [alert show];
+//                }
+//            }
+//
+//                                                        }]];
+//        if ([ms isWebinarMeeting]) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to Panelists"
+//                                                              style:UIAlertActionStyleDefault
+//                                                            handler:^(UIAlertAction *action) {
+//                MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_Panelists WithContent:@"This is a group chat message that send to Panelists"];
+//                NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
+//                                                            }]];
+//        } else {
+//            if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to Waiting Room"
+//                                                                  style:UIAlertActionStyleDefault
+//                                                                handler:^(UIAlertAction *action) {
+//                    MobileRTCSendChatError error = [ms sendChatToGroup:MobileRTCChatGroup_WaitingRoomUsers WithContent:@"This is a group chat message that send to Waiting Room"];
+//                    NSLog(@"SendChat:sendChatToGroup ---> %@", @(error));
+//
+//                                                                }]];
+//            }
+//
+//        }
+//    }
     
     if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
         NSString *muteOnEntryString = [ms isMuteOnEntryOn] ? @"UnMute Participants upon Entry" : @"Mute Participants upon Entry";
@@ -664,12 +664,11 @@
                                                               handler:^(UIAlertAction *action) {
 //                                                                  AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                 UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-
-
-                                                                  QAListViewController *VC = [[QAListViewController alloc] init];
-                                                                  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:VC];
-                                                                  nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                                                                  [ topViewController presentViewController:nav animated:YES completion:NULL];
+                [[[MobileRTC sharedRTC] getMeetingService] presentQAViewController:topViewController];
+//                                                                  QAListViewController *VC = [[QAListViewController alloc] init];
+//                                                                  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:VC];
+//                                                                  nav.modalPresentationStyle = UIModalPresentationFullScreen;
+//                                                                  [ topViewController presentViewController:nav animated:YES completion:NULL];
                                                               }]];
         }
         
@@ -709,6 +708,15 @@
                                                         handler:^(UIAlertAction *action) {
                                                             [ms stopLiveStream];
                                                         }]];
+    }
+    
+    if(![ms isWebinarAttendee]) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Participants"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+//                                                                  AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+            [[[MobileRTC sharedRTC] getMeetingService] presentParticipantsViewController:topViewController]; }]];
     }
     
 #pragma live transcription demo
