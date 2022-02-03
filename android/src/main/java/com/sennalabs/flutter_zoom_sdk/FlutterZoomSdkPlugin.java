@@ -89,7 +89,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
         if (zoomSDK.isInitialized()) {
             List<Integer> response = Arrays.asList(0, 0);
-            result.success(response);
+            result.success(true);
             return;
         }
 
@@ -130,7 +130,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
                 if (errorCode != ZoomError.ZOOM_ERROR_SUCCESS) {
                     System.out.println("Failed to initialize Zoom SDK");
-                    result.success(response);
+                    result.success(false);
                     return;
                 }
 
@@ -141,7 +141,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
                 MeetingService meetingService = zoomSDK.getMeetingService();
                 meetingStatusChannel.setStreamHandler(new StatusStreamHandler(meetingService, context));
-                result.success(response);
+                result.success(true);
             }
 
             @Override
