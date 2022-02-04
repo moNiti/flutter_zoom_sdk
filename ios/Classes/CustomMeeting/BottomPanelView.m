@@ -719,6 +719,16 @@
             [[[MobileRTC sharedRTC] getMeetingService] presentParticipantsViewController:topViewController]; }]];
     }
     
+//    ADDITIONAL FOR LIVLY
+    [alertController addAction:[UIAlertAction actionWithTitle:@"VOTE"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.apple.com"]];
+//        UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+//        [[[MobileRTC sharedRTC] getMeetingService] presentParticipantsViewController:topViewController];
+        
+    }]];
+    
 #pragma live transcription demo
     NSLog(@"LiveTranscription: isMeetingSupportCC===>%@", @([ms isMeetingSupportCC]));
     NSLog(@"LiveTranscription: isLiveTranscriptionFeatureEnabled===>%@", @([ms isLiveTranscriptionFeatureEnabled]));
