@@ -720,7 +720,7 @@
     }
     
 //    ADDITIONAL FOR LIVLY
-    [alertController addAction:[UIAlertAction actionWithTitle:@"VOTE"
+    [alertController addAction:[UIAlertAction actionWithTitle:@"ลงคะแนนเสียง"
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.apple.com"]];

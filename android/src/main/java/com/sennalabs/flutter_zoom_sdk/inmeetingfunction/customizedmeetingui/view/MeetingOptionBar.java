@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -652,7 +653,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                     }
                     case MENU_VOTE: {
                         System.out.println("ลงคแนนเสียง press");
-                        FlutterZoomSdkPlugin.fetchData();
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                        mContext.startActivity(browserIntent);
                         break;
                     }
                     case MENU_QUORUM: {
