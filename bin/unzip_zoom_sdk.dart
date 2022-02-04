@@ -52,15 +52,15 @@ Future<void> checkAndDownloadSDK(String location) async {
         iosSDKFile);
   }
 
-  // var iosSimulateSDKFile = location +
-  //     '/ios/MobileRTC.xcframework/ios-i386_x86_64-simulator/MobileRTC.framework/MobileRTC';
-  // exists = await File(iosSimulateSDKFile).exists();
+  var iosSimulateSDKFile = location +
+      '/ios/MobileRTC.xcframework/ios-x86_64-simulator/MobileRTC.framework/MobileRTC';
+  exists = await File(iosSimulateSDKFile).exists();
 
-  // if (!exists) {
-  //   await downloadFile(
-  //       Uri.parse('https://www.dropbox.com/s/scvml06erwe3ke8/MobileRTC?dl=1'),
-  //       iosSimulateSDKFile);
-  // }
+  if (!exists) {
+    await downloadFile(
+        Uri.parse('https://www.dropbox.com/s/scvml06erwe3ke8/MobileRTC?dl=1'),
+        iosSimulateSDKFile);
+  }
 
   var androidCommonLibFile = location + '/android/libs/commonlib.aar';
   exists = await File(androidCommonLibFile).exists();
