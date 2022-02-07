@@ -218,9 +218,12 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
+        System.out.println("=>>>>> 1");
         channel.invokeMethod("get_vote_url", null, new Result() {
+
             @Override
             public void success(Object o) {
+                System.out.println("=>>>>> 2");
                 String url = o.toString();
                 System.out.println("RESULT IN ANDROID =>>> " + url);
                 if(mContext == null) {
@@ -241,10 +244,15 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
             @Override
             public void error(String s, String s1, Object o) {
+                System.out.println("=>>>>> 3");
+                System.out.println("=>>>>> " +s);
+                System.out.println("=>>>>> " +s1);
+                System.out.println("=>>>>> "+o.toString());
             }
 
             @Override
             public void notImplemented() {
+                System.out.println("=>>>>> 4");
             }
         });
     }
