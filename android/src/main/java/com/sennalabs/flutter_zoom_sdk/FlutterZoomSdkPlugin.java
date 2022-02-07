@@ -217,9 +217,6 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
-        if(channel == null) {
-            System.out.println("=>>>> Channel == null");
-        }
         channel.invokeMethod("get_vote_url", null, new Result() {
             @Override
             public void success(Object o) {
@@ -230,8 +227,6 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(browserIntent);
-                        ;
-
                     } catch (Exception ex) {
                         System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
                     }
