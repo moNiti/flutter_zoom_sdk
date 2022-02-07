@@ -223,18 +223,18 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
             public void success(Object o) {
                 String url = o.toString();
                 System.out.println("RESULT IN ANDROID =>>> " + url);
+                if(mContext == null) {
+                    System.out.println("======== CONTEXT IS NULL =========");
+                }
                 if (url != null && !url.isEmpty()) {
                     System.out.println("URL IS NOT EMPTY");
                     try{
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(browserIntent);
-                    }catch (Exception ex) {
-                        Toast toast = Toast.makeText(mContext.getApplicationContext(),ex.toString() ,Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();//
+                        mContext.startActivity(browserIntent);;
 
-                        // System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
+                    }catch (Exception ex) {
+                         System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
                     }
                 }
             }
