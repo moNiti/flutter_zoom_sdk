@@ -46,11 +46,13 @@ class FlutterZoomSdk {
   }
 
   Future<dynamic> methodHandler(MethodCall call) async {
-    print('======>SET METHOD CALL HANDLER');
+    print('======>CALL METHOD HANDLER');
     switch (call.method) {
       case "get_vote_url":
         return voteUrl;
       default:
+        debugPrint('FLUTTER DEFAULT THROW MissingPluginException');
+
         return MissingPluginException();
     }
   }

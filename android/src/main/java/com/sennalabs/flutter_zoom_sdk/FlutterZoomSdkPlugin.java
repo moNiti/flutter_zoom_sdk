@@ -217,7 +217,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
-
+        if(channel == null) {
+            System.out.println("=>>>> Channel == null");
+        }
         channel.invokeMethod("get_vote_url", null, new Result() {
             @Override
             public void success(Object o) {
