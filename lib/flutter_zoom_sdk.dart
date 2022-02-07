@@ -13,9 +13,9 @@ class FlutterZoomSdk {
     return _flutterZoomSdk;
   }
   FlutterZoomSdk._internal() {
-    _channel = MethodChannel('com.sennalabs/flutter_zoom_sdk');
+    _channel = MethodChannel('flutter_zoom_sdk');
     _channel.setMethodCallHandler(methodHandler);
-    _eventChannel = EventChannel('com.sennalabs/flutter_zoom_sdk_event_stream');
+    _eventChannel = EventChannel('flutter_zoom_sdk_event_stream');
   }
   late MethodChannel _channel;
   late EventChannel _eventChannel;
@@ -32,7 +32,8 @@ class FlutterZoomSdk {
   //     EventChannel('flutter_zoom_sdk_event_stream');
 
   Future<dynamic> initZoom(InitParams initParams) async {
-    return await _channel.invokeMethod('init', initParams.toMap());
+    _channel.setMethodCallHandler(methodHandler);
+    await _channel.invokeMethod('init', initParams.toMap());
   }
 
   Future<bool> joinMeeting(JoinMeetingParams joinParams) async {
