@@ -51,6 +51,7 @@ class FlutterZoomSdk {
       case "get_vote_url":
         return voteUrl;
       default:
+        return MissingPluginException();
     }
   }
 }
