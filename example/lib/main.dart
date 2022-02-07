@@ -45,13 +45,21 @@ class _MyAppState extends State<MyApp> {
           children: [
             ElevatedButton(
                 onPressed: () async {
+                  debugPrint('START ON PRESS');
+                  debugPrint('START SET URL');
+                  await Future.delayed(Duration(seconds: 3));
+                  FlutterZoomSdk().setVoteUrl = "https://flutter.dev";
+                  await Future.delayed(Duration(seconds: 2));
+                  debugPrint('SUCCESS SET VOTE URL');
+                  debugPrint('START OPEN NATIVE VIEW');
+
                   try {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "98363085748",
+                      meetingNo: "92266919649",
                       email: "momo_niti@hotmail.com",
-                      password: "220305",
+                      password: "398198",
                       webinarToken:
                           "pnGVRL_fX4qP4fM6ycl7VtV4m9cnIKUrWaqb9Mak8vQ.DQMAAAAVcNbqURZVczFjRTQ5U1RmYWlfWUF2cmtiMExBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));

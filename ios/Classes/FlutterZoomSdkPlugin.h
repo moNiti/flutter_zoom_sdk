@@ -4,7 +4,7 @@
 #import "CustomMeetingViewController.h"
 
 @interface FlutterZoomSdkPlugin : NSObject<FlutterPlugin, FlutterStreamHandler, MobileRTCMeetingServiceDelegate, MobileRTCAuthDelegate, MobileRTCCustomizedUIMeetingDelegate>
-
+@property (strong, nonatomic) FlutterMethodChannel *channel;
 @property (strong, nonatomic) FlutterEventSink eventSink;
 @property (strong, nonatomic) CustomMeetingViewController *customMeetingVC;
 @property (strong, nonatomic) UIViewController *waitingVC;
@@ -20,4 +20,6 @@
 -(void) meetingStatus:(FlutterMethodCall *)call withResult:(FlutterResult) result;
 
 -(NSString*) getStateMessage:(MobileRTCMeetingState )state;
+
++(void) openVote;
 @end

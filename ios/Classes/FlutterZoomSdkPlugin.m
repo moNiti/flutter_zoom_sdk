@@ -7,10 +7,9 @@
 
 
 @implementation FlutterZoomSdkPlugin
-
+FlutterMethodChannel* channel;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    
-  FlutterMethodChannel* channel = [FlutterMethodChannel
+    channel = [FlutterMethodChannel
       methodChannelWithName:@"flutter_zoom_sdk"
             binaryMessenger:[registrar messenger]];
   FlutterZoomSdkPlugin* instance = [[FlutterZoomSdkPlugin alloc] init];
@@ -409,5 +408,16 @@
     NSLog(@"==========>onEndButtonClick");
     [self.customMeetingVC.actionPresenter leaveMeeting];
     [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - METHOD HANDLER
+
++(void) openVote {
+    
+    [channel invokeMethod:@"get_vote_url" arguments:nil result:^(id  _Nullable result) {
+        if(result) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:result]];
+        }
+    }];
 }
 @end

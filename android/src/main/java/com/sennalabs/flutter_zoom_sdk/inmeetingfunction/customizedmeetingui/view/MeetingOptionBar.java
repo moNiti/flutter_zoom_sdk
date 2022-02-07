@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -85,6 +86,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     private final  int MENU_MEETING_PAPERS = 24;
     private final  int MENU_VOTE= 25;
     private final  int MENU_QUORUM= 26;
+
+    private final int MENU_RAISE_HAND = 27;
 
 
 
@@ -427,92 +430,92 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     VirtualVideoSource virtualVideoSource;
     private void showMoreMenuPopupWindow() {
         final SimpleMenuAdapter menuAdapter = new SimpleMenuAdapter(mContext);
-        //  CUSTOM MEETING FOR LIVLY APP <3
-        menuAdapter.addItem((new SimpleMenuItem(MENU_MEETING_PAPERS, "เอกสารการประชุม")));
-        menuAdapter.addItem((new SimpleMenuItem(MENU_VOTE, "ลงคะแนนเสียง")));
-        menuAdapter.addItem((new SimpleMenuItem(MENU_QUORUM, "องค์ประชุม/ผลการลงคะแนน")));
-        //  END CUSTOM MEETING FOR LIVLY APP <3
+
 
         if (mInMeetingAudioController.isAudioConnected()) {
             menuAdapter.addItem(new SimpleMenuItem(MENU_DISCONNECT_AUDIO, "Disconnect Audio"));
         }
 
-        if (mInMeetingAudioController.canSwitchAudioOutput()) {
-            if (mInMeetingAudioController.getLoudSpeakerStatus()) {
-                menuAdapter.addItem(new SimpleMenuItem(MENU_SPEAKER_OFF, "Speak Off"));
-            } else {
-                menuAdapter.addItem(new SimpleMenuItem(MENU_SPEAKER_ON, "Speak On"));
-            }
-        }
+//        if (mInMeetingAudioController.canSwitchAudioOutput()) {
+//            if (mInMeetingAudioController.getLoudSpeakerStatus()) {
+//                menuAdapter.addItem(new SimpleMenuItem(MENU_SPEAKER_OFF, "Speak Off"));
+//            } else {
+//                menuAdapter.addItem(new SimpleMenuItem(MENU_SPEAKER_ON, "Speak On"));
+//            }
+//        }
 
         if (!isMySelfWebinarAttendee())
             menuAdapter.addItem((new SimpleMenuItem(MENU_SHOW_PLIST, "Paticipants")));
 
-        if (meetingAnnotationController.canDisableViewerAnnotation()) {
-            if (!meetingAnnotationController.isViewerAnnotationDisabled()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_ANNOTATION_OFF, "Disable Annotation")));
-            } else {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_ANNOTATION_ON, "Enable Annotation")));
-            }
-        }
+//        if (meetingAnnotationController.canDisableViewerAnnotation()) {
+//            if (!meetingAnnotationController.isViewerAnnotationDisabled()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_ANNOTATION_OFF, "Disable Annotation")));
+//            } else {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_ANNOTATION_ON, "Enable Annotation")));
+//            }
+//        }
 
-        if (isMySelfWebinarHostCohost()) {
-            if (mInMeetingWebinarController.isAllowPanellistStartVideo()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_DISALLOW_PANELIST_START_VIDEO, "Disallow panelist start video")));
-            } else {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_AllOW_PANELIST_START_VIDEO, "Allow panelist start video")));
-            }
+//        if (isMySelfWebinarHostCohost()) {
+//            if (mInMeetingWebinarController.isAllowPanellistStartVideo()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_DISALLOW_PANELIST_START_VIDEO, "Disallow panelist start video")));
+//            } else {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_AllOW_PANELIST_START_VIDEO, "Allow panelist start video")));
+//            }
+//
+//            if (mInMeetingWebinarController.isAllowAttendeeChat()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_DISALLOW_ATTENDEE_CHAT, "Disallow attendee chat")));
+//            } else {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_AllOW_ATTENDEE_CHAT, "Allow attendee chat")));
+//            }
+//        }
 
-            if (mInMeetingWebinarController.isAllowAttendeeChat()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_DISALLOW_ATTENDEE_CHAT, "Disallow attendee chat")));
-            } else {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_AllOW_ATTENDEE_CHAT, "Allow attendee chat")));
-            }
-        }
-
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
 //            menuAdapter.addItem((new SimpleMenuItem(MENU_SWITCH_DOMAIN, "Switch Domain")));
+//        }
+
+        if(isMySelfWebinarAttendee()) {
+            menuAdapter.addItem((new SimpleMenuItem(MENU_RAISE_HAND, "Raise hand")));
         }
 
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             InMeetingUserInfo myUserInfo = mInMeetingService.getMyUserInfo();
             if (myUserInfo != null && mInMeetingService.isWebinarMeeting()) {
                 if (mInMeetingService.getInMeetingQAController().isQAEnabled()) {
                     menuAdapter.addItem((new SimpleMenuItem(MENU_ANNOTATION_QA, "QA")));
                 }
             }
-        }
+//        }
 
-        if (BuildConfig.DEBUG) {
-            InMeetingInterpretationController interpretationController = ZoomSDK.getInstance().getInMeetingService().getInMeetingInterpretationController();
-            if (interpretationController.isInterpretationEnabled() && !interpretationController.isInterpreter()
-                    && interpretationController.isInterpretationStarted()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_INTERPRETATION, "Language Interpretation")));
-            }
-        }
+//        if (BuildConfig.DEBUG) {
+//            InMeetingInterpretationController interpretationController = ZoomSDK.getInstance().getInMeetingService().getInMeetingInterpretationController();
+//            if (interpretationController.isInterpretationEnabled() && !interpretationController.isInterpreter()
+//                    && interpretationController.isInterpretationStarted()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_INTERPRETATION, "Language Interpretation")));
+//            }
+//        }
 
-        if (BuildConfig.DEBUG) {
-            InMeetingInterpretationController interpretationController=   ZoomSDK.getInstance().getInMeetingService().getInMeetingInterpretationController();
-            if (interpretationController.isInterpretationEnabled()&&isMySelfHost()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_INTERPRETATION_ADMIN, "Interpretation")));
-            }
-        }
+//        if (BuildConfig.DEBUG) {
+//            InMeetingInterpretationController interpretationController=   ZoomSDK.getInstance().getInMeetingService().getInMeetingInterpretationController();
+//            if (interpretationController.isInterpretationEnabled()&&isMySelfHost()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_INTERPRETATION_ADMIN, "Interpretation")));
+//            }
+//        }
 
-        if (isMySelfMeetingHostBoModerator()) {
-            InMeetingBOController boController = mInMeetingService.getInMeetingBOController();
-            if (boController.isBOEnabled()) {
-                menuAdapter.addItem((new SimpleMenuItem(MENU_CREATE_BO, "Breakout Rooms")));
-            }
-        }
+//        if (isMySelfMeetingHostBoModerator()) {
+//            InMeetingBOController boController = mInMeetingService.getInMeetingBOController();
+//            if (boController.isBOEnabled()) {
+//                menuAdapter.addItem((new SimpleMenuItem(MENU_CREATE_BO, "Breakout Rooms")));
+//            }
+//        }
 
         // Add request live transcription button for non-host , support co-host
-        if (isShowLiveTranscriptionItem()){
-            menuAdapter.addItem(new SimpleMenuItem(MENU_LIVE_TRANSCRIPTION_REQUEST, "Request Live Transcription"));
-        }
+//        if (isShowLiveTranscriptionItem()){
+//            menuAdapter.addItem(new SimpleMenuItem(MENU_LIVE_TRANSCRIPTION_REQUEST, "Request Live Transcription"));
+//        }
 
-        if (isShowStopTranscriptionItem()) {
-            menuAdapter.addItem(new SimpleMenuItem(MENU_LIVE_TRANSCRIPTION_STOP, "STOP Live Transcription"));
-        }
+//        if (isShowStopTranscriptionItem()) {
+//            menuAdapter.addItem(new SimpleMenuItem(MENU_LIVE_TRANSCRIPTION_STOP, "STOP Live Transcription"));
+//        }
 //        menuAdapter.addItem((new SimpleMenuItem(MENU_VIRTUAL_SOURCE, "Virtual source")));
 //        menuAdapter.addItem((new SimpleMenuItem(MENU_INTERNAL_SOURCE, "Internal source")));
 
@@ -520,9 +523,15 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
             menuAdapter.addItem((new SimpleMenuItem(MENU_LOWER_ALL_HANDS, "Lower All Hands")));
         }
 
-        if (mInMeetingService.canReclaimHost()) {
-            menuAdapter.addItem((new SimpleMenuItem(MENU_RECLAIM_HOST, "Reclaim Host")));
-        }
+//        if (mInMeetingService.canReclaimHost()) {
+//            menuAdapter.addItem((new SimpleMenuItem(MENU_RECLAIM_HOST, "Reclaim Host")));
+//        }
+
+        //  CUSTOM MEETING FOR LIVLY APP <3
+//        menuAdapter.addItem((new SimpleMenuItem(MENU_MEETING_PAPERS, "เอกสารการประชุม")));
+        menuAdapter.addItem((new SimpleMenuItem(MENU_VOTE, "ลงคะแนนเสียง")));
+//        menuAdapter.addItem((new SimpleMenuItem(MENU_QUORUM, "องค์ประชุม/ผลการลงคะแนน")));
+        //  END CUSTOM MEETING FOR LIVLY APP <3
 
         View popupWindowLayout = LayoutInflater.from(mContext).inflate(R.layout.popupwindow, null);
 
@@ -652,7 +661,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                     }
                     case MENU_VOTE: {
                         System.out.println("ลงคแนนเสียง press");
-                        FlutterZoomSdkPlugin.fetchData();
+                        FlutterZoomSdkPlugin.openVote(mContext);
+
                         break;
                     }
                     case MENU_QUORUM: {
@@ -662,6 +672,11 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                         bottomSheet.show();
                         break;
                     }
+                    case MENU_RAISE_HAND: {
+                        mInMeetingService.raiseMyHand();
+                        break;
+                    }
+
                 }
                 window.dismiss();
             }

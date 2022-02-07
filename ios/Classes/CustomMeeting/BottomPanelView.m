@@ -22,6 +22,7 @@
 #import "InterpreterLanguageSelectViewController.h"
 #import "WebinarAtteedeeslistViewController.h"
 #import "Sample-Prefix.h"
+#import "FlutterZoomSdkPlugin.h"
 
 
 @interface BottomPanelView ()
@@ -442,93 +443,93 @@
                                                               }]];
         }
         
-        if (ms.isMeetingHost || ms.isMeetingCoHost) {
-            NSString *meetingLockTitle = ms.isMeetingLocked ? @"Unlock Meeting":@"Lock Meeting";
-            [alertController addAction:[UIAlertAction actionWithTitle:meetingLockTitle
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                                                                  [self.actionPresenter lockMeeting];
-                                                              }]];
-            NSString *meetingShareLocktitle = ms.isShareLocked ? @"Unlock Share":@"Lock Share";
-            [alertController addAction:[UIAlertAction actionWithTitle:meetingShareLocktitle
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                                                                  [self.actionPresenter lockShare];
-                                                              }]];
-        }
+//        if (ms.isMeetingHost || ms.isMeetingCoHost) {
+//            NSString *meetingLockTitle = ms.isMeetingLocked ? @"Unlock Meeting":@"Lock Meeting";
+//            [alertController addAction:[UIAlertAction actionWithTitle:meetingLockTitle
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                                                                  [self.actionPresenter lockMeeting];
+//                                                              }]];
+//            NSString *meetingShareLocktitle = ms.isShareLocked ? @"Unlock Share":@"Lock Share";
+//            [alertController addAction:[UIAlertAction actionWithTitle:meetingShareLocktitle
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                                                                  [self.actionPresenter lockShare];
+//                                                              }]];
+//        }
         
-        MobileRTCAnnotationService *as = [[MobileRTC sharedRTC] getAnnotationService];
-        if ([as canDisableViewerAnnoataion]) {
-            if ([as isViewerAnnoataionDisabled]) {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"Allow Viewer Annotation"
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [as disableViewerAnnoataion:NO];
-                                                                  }]];
-            } else {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"Disable Viewer Annotation"
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [as disableViewerAnnoataion:YES];
-                                                                  }]];
-            }
-        }
+//        MobileRTCAnnotationService *as = [[MobileRTC sharedRTC] getAnnotationService];
+//        if ([as canDisableViewerAnnoataion]) {
+//            if ([as isViewerAnnoataionDisabled]) {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"Allow Viewer Annotation"
+//                                                                    style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction *action) {
+//                                                                      [as disableViewerAnnoataion:NO];
+//                                                                  }]];
+//            } else {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"Disable Viewer Annotation"
+//                                                                    style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction *action) {
+//                                                                      [as disableViewerAnnoataion:YES];
+//                                                                  }]];
+//            }
+//        }
         MobileRTCWaitingRoomService *ws = [[MobileRTC sharedRTC] getWaitingRoomService];
-        if ([ws isSupportWaitingRoom] && ([ms isMeetingHost] || [ms isMeetingCoHost])) {
-            if ([ws isWaitingRoomOnEntryFlagOn]) {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"Disable Waiting Room On Entry"
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [ws enableWaitingRoomOnEntry:NO];
-                                                                  }]];
-            } else {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"Enable Waiting Room On Entry"
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction *action) {
-                                                                      [ws enableWaitingRoomOnEntry:YES];
-                                                                  }]];
-            }
-        }
+//        if ([ws isSupportWaitingRoom] && ([ms isMeetingHost] || [ms isMeetingCoHost])) {
+//            if ([ws isWaitingRoomOnEntryFlagOn]) {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"Disable Waiting Room On Entry"
+//                                                                    style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction *action) {
+//                                                                      [ws enableWaitingRoomOnEntry:NO];
+//                                                                  }]];
+//            } else {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"Enable Waiting Room On Entry"
+//                                                                    style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction *action) {
+//                                                                      [ws enableWaitingRoomOnEntry:YES];
+//                                                                  }]];
+//            }
+//        }
+//
+//        if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Change Chat Priviledge"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                                                                  [self changeChatPriviledge:sender];
+//                                                              }]];
+//        }
         
-        if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Change Chat Priviledge"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                                                                  [self changeChatPriviledge:sender];
-                                                              }]];
-        }
-        
-        BOOL hasLicense = [[MobileRTC sharedRTC] hasRawDataLicense];
-        if (hasLicense) {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - Camera Data"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                self.cameraAdapter = [[CameraCaptureAdapter alloc] init];
-                [self.videoSourceHelper setExternalVideoSource:self.cameraAdapter];
-            }]];
-            
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - Picture Data"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                self.picAdapter = [[SendPictureAdapter alloc] init];
-                [self.videoSourceHelper setExternalVideoSource:self.picAdapter];
-            }]];
-            
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - YUV Data"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action) {
-                self.yuvAdapter = [[SendYUVAdapter alloc] init];
-                [self.videoSourceHelper setExternalVideoSource:self.yuvAdapter];
-            }]];
-            
-            
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Switch to internal video source"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction *action) {
-                                                                  [self.videoSourceHelper setExternalVideoSource:nil];
-                                                              }]];
-            
-        }
+//        BOOL hasLicense = [[MobileRTC sharedRTC] hasRawDataLicense];
+//        if (hasLicense) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - Camera Data"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                self.cameraAdapter = [[CameraCaptureAdapter alloc] init];
+//                [self.videoSourceHelper setExternalVideoSource:self.cameraAdapter];
+//            }]];
+//
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - Picture Data"
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction *action) {
+//                self.picAdapter = [[SendPictureAdapter alloc] init];
+//                [self.videoSourceHelper setExternalVideoSource:self.picAdapter];
+//            }]];
+//
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Send Rawdata - YUV Data"
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction *action) {
+//                self.yuvAdapter = [[SendYUVAdapter alloc] init];
+//                [self.videoSourceHelper setExternalVideoSource:self.yuvAdapter];
+//            }]];
+//
+//
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"Switch to internal video source"
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:^(UIAlertAction *action) {
+//                                                                  [self.videoSourceHelper setExternalVideoSource:nil];
+//                                                              }]];
+//
+//        }
     }
     
 //    [alertController addAction:[UIAlertAction actionWithTitle:@"Show ANN Pannel"
@@ -575,13 +576,13 @@
                                                         }]];
     }
     
-    if ([ms isEmojiReactionEnabled]) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Send reaction"
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action) {
-                                                            [ms sendEmojiReaction:MobileRTCEmojiReactionType_Clap reactionSkinTone:MobileRTCEmojiReactionSkinTone_Default];
-                                                        }]];
-    }
+//    if ([ms isEmojiReactionEnabled]) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Send reaction"
+//                                                          style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction *action) {
+//                                                            [ms sendEmojiReaction:MobileRTCEmojiReactionType_Clap reactionSkinTone:MobileRTCEmojiReactionSkinTone_Default];
+//                                                        }]];
+//    }
     
 //    if (![ms isChatDisabled]) {
 //        [alertController addAction:[UIAlertAction actionWithTitle:@"Send a group chat message to all"
@@ -649,13 +650,13 @@
                                                         }]];
     }
     
-    if ([ms canClaimhost]) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Claim host"
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action) {
-                                                            [self ClaimHostWitHostKey];
-                                                        }]];
-    }
+//    if ([ms canClaimhost]) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"Claim host"
+//                                                          style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction *action) {
+//                                                            [self ClaimHostWitHostKey];
+//                                                        }]];
+//    }
     
     if ([ms isWebinarMeeting]) {
         if ([ms isQAEnabled]) {
@@ -673,13 +674,13 @@
         }
         
         if ([ms isMeetingHost] || [ms isMeetingCoHost]) {
-            NSString *allowPanelistStartVideoString = [ms isAllowPanelistStartVideo] ? @"Does not Allow Panelist Start Video" : @"Allow Panelist Start Video";
-            [alertController addAction:[UIAlertAction actionWithTitle:allowPanelistStartVideoString
-                                                                        style:UIAlertActionStyleDefault
-                                                                        handler:^(UIAlertAction *action) {
-                                                                            [ms allowPanelistStartVideo:![ms isAllowPanelistStartVideo]];
-                                                                        }]];
-            
+//            NSString *allowPanelistStartVideoString = [ms isAllowPanelistStartVideo] ? @"Does not Allow Panelist Start Video" : @"Allow Panelist Start Video";
+//            [alertController addAction:[UIAlertAction actionWithTitle:allowPanelistStartVideoString
+//                                                                        style:UIAlertActionStyleDefault
+//                                                                        handler:^(UIAlertAction *action) {
+//                                                                            [ms allowPanelistStartVideo:![ms isAllowPanelistStartVideo]];
+//                                                                        }]];
+//
             [alertController addAction:[UIAlertAction actionWithTitle:@"Show Webinar Attendees List"
                                                                       style:UIAlertActionStyleDefault
                                                                     handler:^(UIAlertAction *action) {
@@ -696,19 +697,19 @@
         
     }
     
-    if ([ms isMeetingHost]) {
-        [alertController addAction:[UIAlertAction actionWithTitle:@"start live stream"
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action) {
-                                                            [ms startLiveStreamWithStreamingURL:@"" StreamingKey:@"" BroadcastURL:@""];
-                                                        }]];
-        
-        [alertController addAction:[UIAlertAction actionWithTitle:@"stop live stream"
-                                                          style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction *action) {
-                                                            [ms stopLiveStream];
-                                                        }]];
-    }
+//    if ([ms isMeetingHost]) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"start live stream"
+//                                                          style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction *action) {
+//                                                            [ms startLiveStreamWithStreamingURL:@"" StreamingKey:@"" BroadcastURL:@""];
+//                                                        }]];
+//
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"stop live stream"
+//                                                          style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction *action) {
+//                                                            [ms stopLiveStream];
+//                                                        }]];
+//    }
     
     if(![ms isWebinarAttendee]) {
         [alertController addAction:[UIAlertAction actionWithTitle:@"Participants"
@@ -718,6 +719,14 @@
             UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
             [[[MobileRTC sharedRTC] getMeetingService] presentParticipantsViewController:topViewController]; }]];
     }
+    
+//    ADDITIONAL FOR LIVLY
+    [alertController addAction:[UIAlertAction actionWithTitle:@"ลงคะแนนเสียง"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [FlutterZoomSdkPlugin openVote];
+        
+    }]];
     
 #pragma live transcription demo
     NSLog(@"LiveTranscription: isMeetingSupportCC===>%@", @([ms isMeetingSupportCC]));

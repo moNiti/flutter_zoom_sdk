@@ -19,6 +19,12 @@ class FlutterZoomSdk {
   late MethodChannel _channel;
   late EventChannel _eventChannel;
 
+  String? _voteUrl;
+  String? get voteUrl => _voteUrl;
+  set setVoteUrl(String? url) {
+    _voteUrl = url;
+  }
+
   // static const MethodChannel _channel = MethodChannel('flutter_zoom_sdk')
   //   ..setMethodCallHandler((call) => null);
   // static const EventChannel _eventChannel =
@@ -41,12 +47,9 @@ class FlutterZoomSdk {
 
   Future<dynamic> methodHandler(MethodCall call) async {
     print('======>SET METHOD CALL HANDLER');
-
     switch (call.method) {
-      case "testCallMethod":
-        await Future.delayed(Duration(seconds: 5));
-        debugPrint('CALL `testCallMethod` from android an');
-        return "CALLBACK FROM FLUTTER";
+      case "get_vote_url":
+        return voteUrl;
       default:
     }
   }

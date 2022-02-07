@@ -3,6 +3,7 @@ package com.sennalabs.flutter_zoom_sdk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -214,14 +215,15 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         result.success(true);
     }
 
-    public static void fetchData() {
-        channel.invokeMethod("testCallMethod", "hello", new Result() {
+    public static void openVote(Context mContext) {
+        channel.invokeMethod("get_vote_url", null, new Result() {
             @Override
             public void success(Object o) {
-                // this will be called with o = "some string"
-                System.out.println("SUCCES FROM ANDROID WITH DATA");
-                System.out.println(o.toString());
-
+                String url = o.toString();
+                if (url != null && !url.isEmpty()) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    mContext.startActivity(browserIntent);
+                }
             }
 
             @Override
