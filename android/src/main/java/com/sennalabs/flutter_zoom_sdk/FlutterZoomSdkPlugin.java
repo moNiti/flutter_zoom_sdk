@@ -4,7 +4,9 @@ package com.sennalabs.flutter_zoom_sdk;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -228,7 +230,11 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(browserIntent);
                     }catch (Exception ex) {
-                        System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
+                        Toast toast = Toast.makeText(mContext.getApplicationContext(),ex.toString() ,Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();//
+
+                        // System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
                     }
                 }
             }
