@@ -59,8 +59,8 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
-
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk");
+        System.out.println("SET METHOD CHANNEL");
         channel.setMethodCallHandler(this);
         meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk_event_stream");
 
@@ -218,17 +218,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
-        System.out.println("=>>>>> 1");
         channel.invokeMethod("get_vote_url", null, new Result() {
-
             @Override
             public void success(Object o) {
-                System.out.println("=>>>>> 2");
                 String url = o.toString();
-                System.out.println("RESULT IN ANDROID =>>> " + url);
-                if(mContext == null) {
-                    System.out.println("======== CONTEXT IS NULL =========");
-                }
                 if (url != null && !url.isEmpty()) {
                     System.out.println("URL IS NOT EMPTY");
                     try{
@@ -244,15 +237,12 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
             @Override
             public void error(String s, String s1, Object o) {
-                System.out.println("=>>>>> 3");
-                System.out.println("=>>>>> " +s);
-                System.out.println("=>>>>> " +s1);
-                System.out.println("=>>>>> "+o.toString());
+                System.out.println("=>>>>> ERROR OCCURED" + s);
             }
 
             @Override
             public void notImplemented() {
-                System.out.println("=>>>>> 4");
+                System.out.println("=>>>>> NOT IMPLEMENTED");
             }
         });
     }
