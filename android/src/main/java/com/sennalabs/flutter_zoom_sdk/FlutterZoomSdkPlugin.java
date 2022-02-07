@@ -4,6 +4,7 @@ package com.sennalabs.flutter_zoom_sdk;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Handler;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -56,6 +58,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     static String displayName;
     static String email;
 
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
@@ -68,12 +71,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("getPlatformVersion")) {
-//            Intent intent = new Intent(context, MainActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            this.context.startActivity(intent);
-//            result.success("Android " + android.os.Build.VERSION.RELEASE);
-        } else if (call.method.equals("init")) {
+        if (call.method.equals("init")) {
             init(call, result);
         } else if (call.method.equals("join")) {
             joinMeeting(call, result);
@@ -84,6 +82,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        System.out.println("onDetachedFromEngine");
         channel.setMethodCallHandler(null);
     }
 
@@ -218,19 +217,21 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
+
         channel.invokeMethod("get_vote_url", null, new Result() {
             @Override
             public void success(Object o) {
                 String url = o.toString();
                 if (url != null && !url.isEmpty()) {
                     System.out.println("URL IS NOT EMPTY");
-                    try{
+                    try {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(browserIntent);;
+                        mContext.startActivity(browserIntent);
+                        ;
 
-                    }catch (Exception ex) {
-                         System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
+                    } catch (Exception ex) {
+                        System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
                     }
                 }
             }
