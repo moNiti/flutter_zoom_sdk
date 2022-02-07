@@ -14,6 +14,7 @@ class FlutterZoomSdk {
   }
   FlutterZoomSdk._internal() {
     _channel = MethodChannel('flutter_zoom_sdk');
+    _channel.setMethodCallHandler(methodHandler);
     _eventChannel = EventChannel('flutter_zoom_sdk_event_stream');
   }
   late MethodChannel _channel;
@@ -31,7 +32,6 @@ class FlutterZoomSdk {
   //     EventChannel('flutter_zoom_sdk_event_stream');
 
   Future<dynamic> initZoom(InitParams initParams) async {
-    _channel.setMethodCallHandler(methodHandler);
     return await _channel.invokeMethod('init', initParams.toMap());
   }
 
