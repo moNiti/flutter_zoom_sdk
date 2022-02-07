@@ -62,10 +62,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk");
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "com.sennalabs/flutter_zoom_sdk");
         System.out.println("SET METHOD CHANNEL");
         channel.setMethodCallHandler(this);
-        meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk_event_stream");
+        meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "com.sennalabs/flutter_zoom_sdk_event_stream");
 
     }
 

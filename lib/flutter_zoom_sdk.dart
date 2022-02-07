@@ -13,9 +13,9 @@ class FlutterZoomSdk {
     return _flutterZoomSdk;
   }
   FlutterZoomSdk._internal() {
-    _channel = MethodChannel('flutter_zoom_sdk');
+    _channel = MethodChannel('com.sennalabs/flutter_zoom_sdk');
     _channel.setMethodCallHandler(methodHandler);
-    _eventChannel = EventChannel('flutter_zoom_sdk_event_stream');
+    _eventChannel = EventChannel('com.sennalabs/flutter_zoom_sdk_event_stream');
   }
   late MethodChannel _channel;
   late EventChannel _eventChannel;
