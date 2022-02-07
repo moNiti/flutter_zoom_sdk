@@ -661,11 +661,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
                     }
                     case MENU_VOTE: {
                         System.out.println("ลงคะแนนเสียง press");
-                        try {
-                            FlutterZoomSdkPlugin.openVote(mContext);
-                        }catch (Exception ex) {
-                            System.out.println("=>>>>>>>> ERROR OCCURED "+ex.toString());
-                        }
+                        FlutterZoomSdkPlugin.openVote(mContext);
+                        System.out.println("ลงคะแนนเสียง press แล้วนะ");
                         break;
                     }
                     case MENU_QUORUM: {
