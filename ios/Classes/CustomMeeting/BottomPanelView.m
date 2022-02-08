@@ -29,7 +29,7 @@
 @property (strong, nonatomic)  CAGradientLayer      *gradientLayer;
 @property (strong, nonatomic)  UIButton             *audioButton;
 @property (strong, nonatomic)  UIButton             *videoButton;
-@property (strong, nonatomic)  UIButton             *shareButton;
+@property (strong, nonatomic)  UIButton             *voteButton;
 @property (strong, nonatomic)  UIButton             *chatButton;
 @property (strong, nonatomic)  UIButton             *moreButton;
 
@@ -66,7 +66,7 @@
         
         [self addSubview:self.audioButton];
         [self addSubview:self.videoButton];
-//        [self addSubview:self.shareButton];
+        [self addSubview:self.voteButton];
         [self addSubview:self.chatButton];
         [self addSubview:self.moreButton];
         
@@ -104,23 +104,23 @@
     
     float bottomButtonHeight = IPHONE_X ? 60 : Bottom_Height;
     
-    self.audioButton.frame = CGRectMake(0, 0, panelWidth/4, bottomButtonHeight);
+    self.audioButton.frame = CGRectMake(0, 0, panelWidth/5, bottomButtonHeight);
     [self.audioButton setTitleEdgeInsets:UIEdgeInsetsMake(_audioButton.imageView.frame.size.height ,-self.audioButton.imageView.frame.size.width, 0.0,0.0)];
     [self.audioButton setImageEdgeInsets:UIEdgeInsetsMake(-self.audioButton.imageView.frame.size.height/2, 0.0,0.0, -self.audioButton.titleLabel.bounds.size.width)];
     
-    self.videoButton.frame = CGRectMake(panelWidth/4, 0, panelWidth/4, bottomButtonHeight);
+    self.videoButton.frame = CGRectMake(panelWidth*1/5, 0, panelWidth/5, bottomButtonHeight);
     [self.videoButton setTitleEdgeInsets:UIEdgeInsetsMake(self.videoButton.imageView.frame.size.height ,-self.videoButton.imageView.frame.size.width, 0.0,0.0)];
     [self.videoButton setImageEdgeInsets:UIEdgeInsetsMake(-self.videoButton.imageView.frame.size.height/2, 0.0,0.0, -self.videoButton.titleLabel.bounds.size.width)];
     
-//    self.shareButton.frame = CGRectMake(panelWidth*2/5, 0, panelWidth/5, bottomButtonHeight);
-//    [self.shareButton setTitleEdgeInsets:UIEdgeInsetsMake(self.shareButton.imageView.frame.size.height ,-self.shareButton.imageView.frame.size.width, 0.0,0.0)];
-//    [self.shareButton setImageEdgeInsets:UIEdgeInsetsMake(-self.shareButton.imageView.frame.size.height/2, 0.0,0.0, -self.shareButton.titleLabel.bounds.size.width)];
+    self.voteButton.frame = CGRectMake(panelWidth*2/5, 0, panelWidth/5, bottomButtonHeight);
+    [self.voteButton setTitleEdgeInsets:UIEdgeInsetsMake(self.voteButton.imageView.frame.size.height ,-self.voteButton.imageView.frame.size.width, 0.0,0.0)];
+    [self.voteButton setImageEdgeInsets:UIEdgeInsetsMake(-self.voteButton.imageView.frame.size.height/2, 0.0,0.0, -self.voteButton.titleLabel.bounds.size.width)];
     
-    self.chatButton.frame = CGRectMake(panelWidth*2/4, 0, panelWidth/4, bottomButtonHeight);
+    self.chatButton.frame = CGRectMake(panelWidth*3/5, 0, panelWidth/5, bottomButtonHeight);
     [self.chatButton setTitleEdgeInsets:UIEdgeInsetsMake(self.chatButton.imageView.frame.size.height ,-self.chatButton.imageView.frame.size.width, 0.0,0.0)];
     [self.chatButton setImageEdgeInsets:UIEdgeInsetsMake(-self.chatButton.imageView.frame.size.height/2, 0.0,0.0, -self.chatButton.titleLabel.bounds.size.width)];
     
-    self.moreButton.frame = CGRectMake(panelWidth*3/4, 0, panelWidth/4, bottomButtonHeight);
+    self.moreButton.frame = CGRectMake(panelWidth*4/5, 0, panelWidth/5, bottomButtonHeight);
     [self.moreButton setTitleEdgeInsets:UIEdgeInsetsMake(self.moreButton.imageView.frame.size.height ,-self.moreButton.imageView.frame.size.width, 0.0,0.0)];
     [self.moreButton setImageEdgeInsets:UIEdgeInsetsMake(-self.moreButton.imageView.frame.size.height/2, 0.0,0.0, -self.moreButton.titleLabel.bounds.size.width)];
 }
@@ -130,7 +130,7 @@
     self.gradientLayer = nil;
     self.audioButton = nil;
     self.videoButton = nil;
-    self.shareButton = nil;
+    self.voteButton = nil;
     self.chatButton = nil;
     self.moreButton = nil;
     
@@ -192,21 +192,21 @@
 }
 
 
-//- (UIButton*)shareButton
-//{
-//    if (!_shareButton)
-//    {
-//        _shareButton = [[UIButton alloc] init];
-//        [_shareButton setImage:[UIImage imageNamed:@"icon_meeting_share"] forState:UIControlStateNormal];
-//        [_shareButton setTitle:@"Start Share" forState:UIControlStateNormal];
-//        _shareButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
-//        _shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-//        _shareButton.tag = kTagButtonShare;
-//        [_shareButton addTarget: self action: @selector(onBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    }
-//    return _shareButton;
-//}
+- (UIButton*)voteButton
+{
+    if (!_voteButton)
+    {
+        _voteButton = [[UIButton alloc] init];
+        [_voteButton setImage:[UIImage imageNamed:@"icon_meeting_share"] forState:UIControlStateNormal];
+        [_voteButton setTitle:@"ลงคะแนนเสียง" forState:UIControlStateNormal];
+        _voteButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
+        _voteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        _voteButton.tag = kTagButtonVote;
+        [_voteButton addTarget: self action: @selector(onBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _voteButton;
+}
 
 
 - (UIButton*)chatButton
@@ -296,9 +296,9 @@
             [self updateMyVideoStatus];
             break;
         }
-        case kTagButtonShare:
+        case kTagButtonVote:
         {
-            [self.sharePresenter startOrStopAppShare];
+            [FlutterZoomSdkPlugin openVote];
             break;
         }
         case kTagButtonChat:
@@ -721,12 +721,12 @@
     }
     
 //    ADDITIONAL FOR LIVLY
-    [alertController addAction:[UIAlertAction actionWithTitle:@"ลงคะแนนเสียง"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-        [FlutterZoomSdkPlugin openVote];
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"ลงคะแนนเสียง"
+//                                                        style:UIAlertActionStyleDefault
+//                                                      handler:^(UIAlertAction *action) {
+//        [FlutterZoomSdkPlugin openVote];
         
-    }]];
+//    }]];
     
 #pragma live transcription demo
     NSLog(@"LiveTranscription: isMeetingSupportCC===>%@", @([ms isMeetingSupportCC]));
@@ -975,22 +975,6 @@
     }
     [self.videoButton setTitleEdgeInsets:UIEdgeInsetsMake(self.videoButton.imageView.frame.size.height ,-self.videoButton.imageView.frame.size.width, 0.0,0.0)];
     [self.videoButton setImageEdgeInsets:UIEdgeInsetsMake(-self.videoButton.imageView.frame.size.height/2, 0.0,0.0, -self.videoButton.titleLabel.bounds.size.width)];
-}
-
-- (void)updateMyShareStatus
-{
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    if (!ms) return;
-    if (ms.isStartingShare)
-    {
-        [self.shareButton setImage:[UIImage imageNamed:@"icon_meeting_stopshare"] forState:UIControlStateNormal];
-        [self.shareButton setTitle:@"Stop Share" forState:UIControlStateNormal];
-    } else {
-        [self.shareButton setImage:[UIImage imageNamed:@"icon_meeting_share"] forState:UIControlStateNormal];
-        [self.shareButton setTitle:@"Start Share" forState:UIControlStateNormal];
-    }
-    [self.shareButton setTitleEdgeInsets:UIEdgeInsetsMake(self.shareButton.imageView.frame.size.height ,-self.shareButton.imageView.frame.size.width, 0.0,0.0)];
-    [self.shareButton setImageEdgeInsets:UIEdgeInsetsMake(-self.shareButton.imageView.frame.size.height/2, 0.0,0.0, -self.shareButton.titleLabel.bounds.size.width)];
 }
 
 - (void)dialRoomFunction {

@@ -99,7 +99,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     View mTopBar;
 
     private View mBtnLeave;
-    private View mBtnShare;
+    private View mBtnVote;
     private View mBtnCamera;
     private View mBtnAudio;
     private View mBtnSwitchCamera;
@@ -136,7 +136,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
 
         void onClickVideo();
 
-        void onClickShare();
+        void onClickVote();
 
         void onClickChats();
 
@@ -199,8 +199,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
         mTopBar = findViewById(R.id.top_bar);
         mBtnLeave = findViewById(R.id.btnLeaveZoomMeeting);
         mBtnLeave.setOnClickListener(this);
-        mBtnShare = findViewById(R.id.btnShare);
-        mBtnShare.setOnClickListener(this);
+        mBtnVote = findViewById(R.id.btnVote);
+        mBtnVote.setOnClickListener(this);
 
         mBtnCamera = findViewById(R.id.btnCamera);
         mBtnCamera.setOnClickListener(this);
@@ -214,7 +214,6 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
 
         mMeetingAudioText = findViewById(R.id.text_audio);
         mMeetingVideoText = findViewById(R.id.text_video);
-        mMeetingShareText = findViewById(R.id.text_share);
 
 
         findViewById(R.id.moreActionImg).setOnClickListener(this);
@@ -277,7 +276,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     public void refreshToolbar() {
         updateAudioButton();
         updateVideoButton();
-        updateShareButton();
+//        updateShareButton();
         updateSwitchCameraButton();
     }
 
@@ -299,21 +298,6 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
             return myUserInfo.getInMeetingUserRole() == InMeetingUserInfo.InMeetingUserRole.USERROLE_ATTENDEE;
         }
         return false;
-    }
-
-    public void updateShareButton() {
-        if (isMySelfWebinarAttendee()) {
-            mBtnShare.setVisibility(View.GONE);
-        } else {
-            mBtnShare.setVisibility(View.VISIBLE);
-            if (mInMeetingShareController.isSharingOut()) {
-                mMeetingShareText.setText("Stop share");
-                mShareStatusImg.setImageResource(R.drawable.icon_share_pause);
-            } else {
-                mMeetingShareText.setText("Share");
-                mShareStatusImg.setImageResource(R.drawable.icon_share_resume);
-            }
-        }
     }
 
     public void updateVideoButton() {
@@ -345,9 +329,9 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
             if (null != mCallBack) {
                 mCallBack.onClickLeave();
             }
-        } else if (id == R.id.btnShare) {
+        } else if (id == R.id.btnVote) {
             if (null != mCallBack) {
-                mCallBack.onClickShare();
+                mCallBack.onClickVote();
             }
         } else if (id == R.id.btnCamera) {
             if (null != mCallBack) {

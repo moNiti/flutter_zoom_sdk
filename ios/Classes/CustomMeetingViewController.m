@@ -171,11 +171,6 @@
     [self.bottomPanelView updateMyVideoStatus];
 }
 
-- (void)updateMyShareStatus
-{
-    [self.bottomPanelView updateMyShareStatus];
-}
-
 - (void)removeAllSubView
 {
     for (UIViewController * vc in self.vcArray)

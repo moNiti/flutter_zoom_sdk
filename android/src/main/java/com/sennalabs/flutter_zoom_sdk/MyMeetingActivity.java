@@ -753,8 +753,8 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
         }
 
         @Override
-        public void onClickShare() {
-            meetingShareHelper.onClickShare();
+        public void onClickVote() {
+            FlutterZoomSdkPlugin.INSTANCE.openVote(getApplicationContext());
         }
 
         @Override
@@ -1161,7 +1161,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
     public void onShareActiveUser(long userId) {
         meetingShareHelper.onShareActiveUser(mCurShareUserId, userId);
         mCurShareUserId = userId;
-        meetingOptionBar.updateShareButton();
+//        meetingOptionBar.updateShareButton();
         checkShowVideoLayout(true);
     }
 

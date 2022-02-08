@@ -12,7 +12,7 @@
 
 #define kTagButtonAudio         1000
 #define kTagButtonVideo         (kTagButtonAudio+1)
-#define kTagButtonShare         (kTagButtonAudio+2)
+#define kTagButtonVote         (kTagButtonAudio+2)
 #define kTagButtonChat          (kTagButtonAudio+3)
 #define kTagButtonMore          (kTagButtonAudio+4)
 
@@ -22,6 +22,5 @@
 - (void)hiddenBottomPanelView;
 - (void)updateMyAudioStatus;
 - (void)updateMyVideoStatus;
-- (void)updateMyShareStatus;
 @end
 

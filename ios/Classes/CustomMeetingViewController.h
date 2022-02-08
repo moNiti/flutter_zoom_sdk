@@ -45,7 +45,6 @@
 - (void)updateVideoOrShare;
 - (void)updateMyAudioStatus;
 - (void)updateMyVideoStatus;
-- (void)updateMyShareStatus;
 
 - (void)showVideoView;
 - (void)showRemoteShareView;
