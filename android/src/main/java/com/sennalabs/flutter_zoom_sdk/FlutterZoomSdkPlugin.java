@@ -4,18 +4,16 @@ package com.sennalabs.flutter_zoom_sdk;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
-
-import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.other.MeetingCommonCallback;
-import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.MeetingWindowHelper;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import io.flutter.embedding.android.FlutterActivity;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -24,15 +22,10 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingNotificationHandle;
-import us.zoom.sdk.InMeetingService;
-import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
-import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
-import us.zoom.sdk.StartMeetingParams;
 import us.zoom.sdk.ZoomError;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKInitParams;
@@ -47,18 +40,22 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
-    private static MethodChannel channel;
+    private MethodChannel channel;
     private Context context;
     private EventChannel meetingStatusChannel;
 
     static String displayName;
     static String email;
 
+    static public FlutterZoomSdkPlugin INSTANCE;
+
+
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
-
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk");
+        System.out.println("SET METHOD CHANNEL");
         channel.setMethodCallHandler(this);
         meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk_event_stream");
 
@@ -66,12 +63,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("getPlatformVersion")) {
-//            Intent intent = new Intent(context, MainActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            this.context.startActivity(intent);
-//            result.success("Android " + android.os.Build.VERSION.RELEASE);
-        } else if (call.method.equals("init")) {
+        if (call.method.equals("init")) {
             init(call, result);
         } else if (call.method.equals("join")) {
             joinMeeting(call, result);
@@ -82,6 +74,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        System.out.println("onDetachedFromEngine");
         channel.setMethodCallHandler(null);
     }
 
@@ -215,30 +208,36 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         result.success(true);
     }
 
-    public static void openVote(Context mContext) {
-        channel.invokeMethod("get_vote_url", null, new Result() {
+    public void openVote(Context mContext) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void success(Object o) {
-                String url = o.toString();
-                System.out.println("RESULT IN ANDROID =>>> " + url);
-                if (url != null && !url.isEmpty()) {
-                    System.out.println("URL IS NOT EMPTY");
-                    try{
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(browserIntent);
-                    }catch (Exception ex) {
-                        System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
+            public void run() {
+                channel.invokeMethod("get_vote_url", null, new Result() {
+                    @Override
+                    public void success(Object o) {
+                        String url = o.toString();
+                        if (url != null && !url.isEmpty()) {
+                            System.out.println("URL IS NOT EMPTY");
+                            try {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                mContext.startActivity(browserIntent);
+                            } catch (Exception ex) {
+                                System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void error(String s, String s1, Object o) {
-            }
+                    @Override
+                    public void error(String s, String s1, Object o) {
+                        System.out.println("=>>>>> ERROR OCCURED" + s);
+                    }
 
-            @Override
-            public void notImplemented() {
+                    @Override
+                    public void notImplemented() {
+                        System.out.println("=>>>>> NOT IMPLEMENTED");
+                    }
+                });
             }
         });
     }
@@ -246,7 +245,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-
+        INSTANCE = this;
     }
 
     @Override

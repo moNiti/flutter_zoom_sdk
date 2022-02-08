@@ -6,12 +6,11 @@ import 'package:flutter_zoom_sdk/model/models.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-
-  bool result = await FlutterZoomSdk().initZoom(InitParams(
+  await FlutterZoomSdk().handlePlatformChannelMethods();
+  bool? result = await FlutterZoomSdk().initZoom(InitParams(
       appKey: dotenv.env['ZOOM_KEY']!,
       appSecret: dotenv.env['ZOOM_SECRET']!,
       domain: dotenv.env['ZOOM_DOMAIN']!));
-
   FlutterZoomSdk().onMeetingStatus().listen((status) {
     print("[Meeting Status Stream] : " + status[0] + " - " + status[1]);
   });
@@ -57,9 +56,9 @@ class _MyAppState extends State<MyApp> {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "92266919649",
+                      meetingNo: "92829628215",
                       email: "momo_niti@hotmail.com",
-                      password: "398198",
+                      password: "609564",
                       webinarToken:
                           "pnGVRL_fX4qP4fM6ycl7VtV4m9cnIKUrWaqb9Mak8vQ.DQMAAAAVcNbqURZVczFjRTQ5U1RmYWlfWUF2cmtiMExBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));

@@ -335,7 +335,6 @@ FlutterMethodChannel* channel;
 - (void)onSinkMeetingActiveShare:(NSUInteger)userID
 {
     NSLog(@"==========>onSinkMeetingActiveShare");
-    [self.customMeetingVC updateMyShareStatus];
     BOOL sharing = (0 != userID);
     if (sharing)
     {

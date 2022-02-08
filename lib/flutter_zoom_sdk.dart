@@ -12,12 +12,11 @@ class FlutterZoomSdk {
   factory FlutterZoomSdk() {
     return _flutterZoomSdk;
   }
-  FlutterZoomSdk._internal() {
-    _channel = MethodChannel('flutter_zoom_sdk');
-    _eventChannel = EventChannel('flutter_zoom_sdk_event_stream');
-  }
-  late MethodChannel _channel;
-  late EventChannel _eventChannel;
+  FlutterZoomSdk._internal();
+
+  final MethodChannel _channel = const MethodChannel('flutter_zoom_sdk');
+  final EventChannel _eventChannel =
+      const EventChannel('flutter_zoom_sdk_event_stream');
 
   String? _voteUrl;
   String? get voteUrl => _voteUrl;
@@ -31,8 +30,7 @@ class FlutterZoomSdk {
   //     EventChannel('flutter_zoom_sdk_event_stream');
 
   Future<dynamic> initZoom(InitParams initParams) async {
-    _channel.setMethodCallHandler(methodHandler);
-    return await _channel.invokeMethod('init', initParams.toMap());
+    await _channel.invokeMethod('init', initParams.toMap());
   }
 
   Future<bool> joinMeeting(JoinMeetingParams joinParams) async {
@@ -45,12 +43,17 @@ class FlutterZoomSdk {
     return _eventChannel.receiveBroadcastStream();
   }
 
-  Future<dynamic> methodHandler(MethodCall call) async {
-    print('======>SET METHOD CALL HANDLER');
-    switch (call.method) {
-      case "get_vote_url":
+  Future<dynamic> handlePlatformChannelMethods() async {
+    debugPrint('CALL handlePlatformChannelMethods');
+    _channel.setMethodCallHandler((call) async {
+      debugPrint('CALL setMethodCallHandler');
+
+      if (call.method == 'get_vote_url') {
+        debugPrint('IN FLUTTER => CALL => GET VOTE URL');
         return voteUrl;
-      default:
-    }
+      } else {
+        throw MissingPluginException();
+      }
+    });
   }
 }
