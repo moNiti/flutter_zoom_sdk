@@ -40,12 +40,15 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
-    private static MethodChannel channel;
+    private MethodChannel channel;
     private Context context;
     private EventChannel meetingStatusChannel;
 
     static String displayName;
     static String email;
+
+    static public FlutterZoomSdkPlugin INSTANCE;
+
 
 
     @Override
@@ -205,7 +208,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         result.success(true);
     }
 
-    public static void openVote(Context mContext) {
+    public void openVote(Context mContext) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -242,7 +245,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-
+        INSTANCE = this;
     }
 
     @Override
