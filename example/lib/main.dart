@@ -6,7 +6,7 @@ import 'package:flutter_zoom_sdk/model/models.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-
+  await FlutterZoomSdk().handlePlatformChannelMethods();
   bool? result = await FlutterZoomSdk().initZoom(InitParams(
       appKey: dotenv.env['ZOOM_KEY']!,
       appSecret: dotenv.env['ZOOM_SECRET']!,

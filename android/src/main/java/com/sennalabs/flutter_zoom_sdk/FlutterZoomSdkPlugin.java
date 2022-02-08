@@ -206,7 +206,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     }
 
     public static void openVote(Context mContext) {
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
                 channel.invokeMethod("get_vote_url", null, new Result() {
@@ -236,7 +236,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
                     }
                 });
             }
-        }, 3000);
+        });
     }
 
 
