@@ -208,9 +208,6 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(true);
         ZoomSDK.getInstance().getSmsService().enableZoomAuthRealNameMeetingUIShown(false);
         meetingService.joinMeetingWithParams(context, params, null);
-        long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
-
-        ZoomSDK.getInstance().getInMeetingService().changeName(this.displayName, myUserId);
 
         MeetingStatus status = meetingService.getMeetingStatus();
 
