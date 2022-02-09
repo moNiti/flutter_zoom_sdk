@@ -43,7 +43,7 @@ public class StatusStreamHandler implements EventChannel.StreamHandler {
                 if(meetingStatus == MeetingStatus.MEETING_STATUS_INMEETING) {
                     long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
                     System.out.println("MY User Id =>>>>>>>>>" + myUserId);
-                    MobileRTCSDKError result = ZoomSDK.getInstance().getInMeetingService().changeName("HELLO K.TEAM", myUserId);
+                    MobileRTCSDKError result = ZoomSDK.getInstance().getInMeetingService().changeName(FlutterZoomSdkPlugin.INSTANCE.getDisplayName(), myUserId);
                     System.out.println("RESULT change name =>>>>" + result);
                 }
 
