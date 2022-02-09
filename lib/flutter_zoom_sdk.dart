@@ -39,6 +39,10 @@ class FlutterZoomSdk {
         .then<bool>((bool? value) => value ?? false);
   }
 
+  Future<String?> getZoomUserId() async {
+    return await _channel.invokeMethod("get_zoom_user_id");
+  }
+
   Stream<dynamic> onMeetingStatus() {
     return _eventChannel.receiveBroadcastStream();
   }

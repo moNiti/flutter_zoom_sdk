@@ -68,6 +68,7 @@ import us.zoom.sdk.InMeetingUserInfo;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingStatus;
 import us.zoom.sdk.MobileRTCRenderInfo;
+import us.zoom.sdk.MobileRTCSDKError;
 import us.zoom.sdk.MobileRTCSMSVerificationError;
 import us.zoom.sdk.MobileRTCShareView;
 import us.zoom.sdk.MobileRTCVideoUnitRenderInfo;
@@ -1235,8 +1236,6 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
         if(displayName != null && email != null) {
             inMeetingEventHandler.setRegisterWebinarInfo(displayName, email, false);
-            long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
-            ZoomSDK.getInstance().getInMeetingService().changeName(displayName, myUserId);
         }
     }
 
