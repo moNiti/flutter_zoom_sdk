@@ -137,7 +137,7 @@ FlutterMethodChannel* channel;
 
 -(void)getZoomUserId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSUInteger userId = [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
-    NSString *inStr = [NSString stringWithFormat: @"%ld", (long)userId]
+    NSString *inStr = [NSString stringWithFormat: @"%ld", (long)userId];
     result(inStr);
 }
 
