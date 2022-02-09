@@ -12,6 +12,7 @@ import us.zoom.sdk.MeetingError;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.MobileRTCSDKError;
 import us.zoom.sdk.ZoomSDK;
 
 public class StatusStreamHandler implements EventChannel.StreamHandler {
@@ -38,6 +39,13 @@ public class StatusStreamHandler implements EventChannel.StreamHandler {
                 if (meetingStatus == MeetingStatus.MEETING_STATUS_CONNECTING) {
                     System.out.println("CALLLLLLL STATUS LISTENRER");
                     showMeetingUi();
+                }
+                if(meetingStatus == MeetingStatus.MEETING_STATUS_INMEETING) {
+                    System.out.println("HELLO IS THIS LINE WORK");
+                    long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
+                    System.out.println("MY User Id =>>>>>>>>>" + myUserId);
+                    MobileRTCSDKError result = ZoomSDK.getInstance().getInMeetingService().changeName(FlutterZoomSdkPlugin.INSTANCE.getDisplayName(), myUserId);
+                    System.out.println("RESULT change name =>>>>" + result);
                 }
 
                 events.success(getMeetingStatusMessage(meetingStatus));

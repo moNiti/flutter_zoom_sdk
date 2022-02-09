@@ -161,6 +161,10 @@ FlutterMethodChannel* channel;
     if (state == MobileRTCMeetingState_InMeeting) {
            [self.customMeetingVC.videoVC.preVideoView removeFromSuperview];
     }
+    if(state == MobileRTCMeetingState_InMeeting) {
+        NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
+        [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
+    }
     _eventSink([self getStateMessage:state]);
 }
 
@@ -220,8 +224,6 @@ FlutterMethodChannel* channel;
     if (completion)
     {
         BOOL ret = completion(self.displayName, self.email, NO);
-        NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
-        [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
         NSLog(@"%zd",ret);
     }
 }
