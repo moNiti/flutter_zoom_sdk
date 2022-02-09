@@ -43,11 +43,19 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
     private MethodChannel channel;
     private Context context;
     private EventChannel meetingStatusChannel;
-
-    static String displayName;
-    static String email;
+    private String displayName;
+    private String email;
 
     static public FlutterZoomSdkPlugin INSTANCE;
+
+//    GETTER ZONE
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
 
 
@@ -200,6 +208,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(true);
         ZoomSDK.getInstance().getSmsService().enableZoomAuthRealNameMeetingUIShown(false);
         meetingService.joinMeetingWithParams(context, params, null);
+        long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
+
+        ZoomSDK.getInstance().getInMeetingService().changeName(this.displayName, myUserId);
 
         MeetingStatus status = meetingService.getMeetingStatus();
 
