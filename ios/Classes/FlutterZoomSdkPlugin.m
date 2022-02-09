@@ -84,8 +84,6 @@ FlutterMethodChannel* channel;
 
         
         MobileRTCMeetError ret = [ms joinMeetingWithJoinParam:joinParam];
-        NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
-        [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
         NSLog(@"MobileRTC onJoinaMeeting ret: %@", ret == MobileRTCMeetError_Success ? @"Success" : @(ret));
         
     }
@@ -222,6 +220,8 @@ FlutterMethodChannel* channel;
     if (completion)
     {
         BOOL ret = completion(self.displayName, self.email, NO);
+        NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
+        [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
         NSLog(@"%zd",ret);
     }
 }
