@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "vote.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "vote-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "vote.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
