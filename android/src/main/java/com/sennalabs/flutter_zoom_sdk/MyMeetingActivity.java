@@ -1230,8 +1230,8 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
     @Override
     public void onJoinWebinarNeedUserNameAndEmail(InMeetingEventHandler inMeetingEventHandler) {
-        String displayName = FlutterZoomSdkPlugin.displayName;
-        String email = FlutterZoomSdkPlugin.email;
+        String displayName = FlutterZoomSdkPlugin.INSTANCE.getDisplayName();
+        String email = FlutterZoomSdkPlugin.INSTANCE.getEmail();
 
         if(displayName != null && email != null) {
             inMeetingEventHandler.setRegisterWebinarInfo(displayName, email, false);
