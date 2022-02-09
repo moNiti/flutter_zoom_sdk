@@ -1236,6 +1236,7 @@ public class MyMeetingActivity extends FragmentActivity implements View.OnClickL
 
         if(displayName != null && email != null) {
             inMeetingEventHandler.setRegisterWebinarInfo(displayName, email, false);
+            System.out.println("HELLO IS THIS LINE WORK");
             long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
             System.out.println("MY User Id =>>>>>>>>>" + myUserId);
             MobileRTCSDKError result = ZoomSDK.getInstance().getInMeetingService().changeName(displayName, myUserId);
