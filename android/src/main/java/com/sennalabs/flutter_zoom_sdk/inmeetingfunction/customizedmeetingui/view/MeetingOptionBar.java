@@ -32,6 +32,7 @@ import us.zoom.sdk.InMeetingShareController;
 import us.zoom.sdk.InMeetingUserInfo;
 import us.zoom.sdk.InMeetingVideoController;
 import us.zoom.sdk.InMeetingWebinarController;
+import us.zoom.sdk.MobileRTCSDKError;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKPreProcessRawData;
 import us.zoom.sdk.ZoomSDKPreProcessor;
@@ -513,7 +514,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
 
         //  CUSTOM MEETING FOR LIVLY APP <3
 //        menuAdapter.addItem((new SimpleMenuItem(MENU_MEETING_PAPERS, "เอกสารการประชุม")));
-        menuAdapter.addItem((new SimpleMenuItem(MENU_VOTE, "ลงคะแนนเสียง")));
+//        menuAdapter.addItem((new SimpleMenuItem(MENU_VOTE, "ลงคะแนนเสียง")));
 //        menuAdapter.addItem((new SimpleMenuItem(MENU_QUORUM, "องค์ประชุม/ผลการลงคะแนน")));
         //  END CUSTOM MEETING FOR LIVLY APP <3
 

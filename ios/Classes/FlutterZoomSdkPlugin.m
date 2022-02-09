@@ -30,7 +30,9 @@ FlutterMethodChannel* channel;
       return [self join:call withResult:result];
   } else if ([@"meeting_status" isEqualToString:call.method]) {
       return [self meetingStatus:call withResult:result];
-  }  else {
+  } else if([@"get_zoom_user_id" isEqualToString:call.method]) {
+      return [self getZoomUserId:call withResult:result];
+  }else {
     result(FlutterMethodNotImplemented);
   }
 }
@@ -131,6 +133,12 @@ FlutterMethodChannel* channel;
             return [[NSArray alloc]  initWithObjects:@"MEETING_STATUS_UNKNOWN", @"", nil];
                        
     }
+}
+
+-(void)getZoomUserId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSUInteger userId = [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
+    NSString *inStr = [NSString stringWithFormat: @"%ld", (long)userId]
+    result(inStr);
 }
 
 #pragma mark - MobileRTCAuthDelegate

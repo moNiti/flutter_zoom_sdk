@@ -76,7 +76,11 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
             init(call, result);
         } else if (call.method.equals("join")) {
             joinMeeting(call, result);
-        } else {
+        }
+        else if(call.method.equals("get_zoom_user_id")) {
+            getZoomUserId(call, result);
+
+        }else {
             result.notImplemented();
         }
     }
@@ -155,6 +159,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         zoomSDK.initialize(context, listener, initParams);
     }
 
+    public void getZoomUserId(MethodCall methodCall, MethodChannel.Result result) {
+        long myUserId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
+        result.success(String.valueOf(myUserId));
+    }
     public void joinMeeting(MethodCall methodCall, MethodChannel.Result result) {
 
         Map<String, String> options = methodCall.arguments();
@@ -172,6 +180,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         JoinMeetingOptions opts = new JoinMeetingOptions();
         opts.no_webinar_register_dialog = true;
         opts.webinar_token = options.get("webinarToken");
+
 //        opts.no_invite = false;
 //        opts.no_share = parseBoolean(options, "disableShare");
 //        opts.no_titlebar =  parseBoolean(options, "disableTitlebar");

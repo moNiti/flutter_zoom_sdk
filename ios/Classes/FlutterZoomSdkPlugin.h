@@ -19,6 +19,8 @@
 
 -(void) meetingStatus:(FlutterMethodCall *)call withResult:(FlutterResult) result;
 
+-(void) getZoomUserId:(FlutterMethodCall *)call withResult:(FlutterResult) result;
+
 -(NSString*) getStateMessage:(MobileRTCMeetingState )state;
 
 +(void) openVote;

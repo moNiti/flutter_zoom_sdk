@@ -39,7 +39,7 @@ class FlutterZoomSdk {
         .then<bool>((bool? value) => value ?? false);
   }
 
-  Future<int?> getZoomUserId() async {
+  Future<String?> getZoomUserId() async {
     return await _channel.invokeMethod("get_zoom_user_id");
   }
 
