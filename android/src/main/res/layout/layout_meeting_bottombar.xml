@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
             android:focusable="false"
-            android:src="@drawable/icon_share_resume" />
+            android:src="@drawable/vote" />
 
         <TextView
             android:id="@+id/text_vote"
