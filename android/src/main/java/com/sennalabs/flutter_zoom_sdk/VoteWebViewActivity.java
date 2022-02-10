@@ -21,6 +21,7 @@ public class VoteWebViewActivity extends AppCompatActivity {
 
         WebView browser = (WebView) findViewById(R.id.voteWebView);
         WebSettings webSettings = browser.getSettings();
+        webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(true);
 
         Bundle extras = getIntent().getExtras();
