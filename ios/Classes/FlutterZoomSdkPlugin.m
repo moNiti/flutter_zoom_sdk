@@ -421,6 +421,62 @@ FlutterMethodChannel* channel;
     [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (void)onSinkMeetingAudioRequestUnmuteByHost
+{
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert"
+                                                          message:[NSString stringWithFormat:@"Host allow you to umute righ now."]
+                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil
+                               ]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [ms muteMyAudio:NO];
+        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+    }
+                               ]];
+    
+    [ topViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)onSinkSelfAllowTalkNotification
+{
+    NSLog(@"MobileRTC onSinkSelfAllowTalkNotification");
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert"
+                                                          message:[NSString stringWithFormat:@"Host allow you to talk righ now."]
+                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil
+                               ]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [ms muteMyAudio:NO];
+        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+    }
+                               ]];
+    
+    [ topViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)onSinkSelfDisallowTalkNotification {
+    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+}
+
+-(void) onMyAudioStateChange {
+    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+}
 #pragma mark - METHOD HANDLER
 
 +(void) openVote {

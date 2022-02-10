@@ -3,7 +3,7 @@
 #import <MobileRTC/MobileRTCMeetingDelegate.h>
 #import "CustomMeetingViewController.h"
 
-@interface FlutterZoomSdkPlugin : NSObject<FlutterPlugin, FlutterStreamHandler, MobileRTCMeetingServiceDelegate, MobileRTCAuthDelegate, MobileRTCCustomizedUIMeetingDelegate>
+@interface FlutterZoomSdkPlugin : NSObject<FlutterPlugin, FlutterStreamHandler, MobileRTCMeetingServiceDelegate, MobileRTCAuthDelegate, MobileRTCCustomizedUIMeetingDelegate, MobileRTCWebinarServiceDelegate, MobileRTCAudioServiceDelegate>
 @property (strong, nonatomic) FlutterMethodChannel *channel;
 @property (strong, nonatomic) FlutterEventSink eventSink;
 @property (strong, nonatomic) CustomMeetingViewController *customMeetingVC;
