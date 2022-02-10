@@ -335,7 +335,6 @@
     return _actionPresenter;
 }
 
-
 #pragma mark - Shrink & Delegate
 
 #define SHRINKMODEWIDTH (IS_IPAD ? 200 : 90)

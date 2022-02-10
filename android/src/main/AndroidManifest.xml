@@ -14,23 +14,23 @@
         <activity
             android:name=".MyMeetingActivity"
             android:configChanges="screenSize"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity
             android:name=".inmeetingfunction.customizedmeetingui.RawDataMeetingActivity"
             android:configChanges="screenSize|orientation|keyboardHidden|keyboard"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity android:name=".ui.QAActivity" />
         <activity
             android:name=".ui.BreakoutRoomsAdminActivity"
             android:configChanges="screenSize"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity
             android:name=".ui.BoEditActivity"
             android:configChanges="screenSize"
-            android:screenOrientation="portrait"
+            android:screenOrientation="sensor"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity
             android:name=".inmeetingfunction.zoommeetingui.CustomZoomUIActivity"

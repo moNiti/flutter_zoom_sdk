@@ -421,6 +421,62 @@ FlutterMethodChannel* channel;
     [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (void)onSinkMeetingAudioRequestUnmuteByHost
+{
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
+                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
+                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil
+                               ]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [ms muteMyAudio:NO];
+        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+    }
+                               ]];
+    
+    [ topViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)onSinkSelfAllowTalkNotification
+{
+    NSLog(@"MobileRTC onSinkSelfAllowTalkNotification");
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
+                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
+                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil
+                               ]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+        [ms muteMyAudio:NO];
+        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+    }
+                               ]];
+    
+    [ topViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)onSinkSelfDisallowTalkNotification {
+    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+}
+
+-(void) onMyAudioStateChange {
+    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
+}
 #pragma mark - METHOD HANDLER
 
 +(void) openVote {

@@ -55,11 +55,11 @@
 {
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    UIImage *image = [UIImage imageNamed:@"icon_mainicon_normal"];
+//    UIImage *image = [UIImage imageNamed:@"icon_mainicon_normal"];
     self.switchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.switchBtn.frame = CGRectMake(5.0, 0.0, image.size.width, image.size.height);
-    [self.switchBtn setBackgroundImage:[UIImage imageNamed:@"icon_mainicon_normal"] forState:UIControlStateNormal];
-    [self.switchBtn setBackgroundImage:[UIImage imageNamed:@"icon_mainicon_pressed"] forState:UIControlStateSelected];
+//    self.switchBtn.frame = CGRectMake(5.0, 0.0, image.size.width, image.size.height);
+//    [self.switchBtn setBackgroundImage:[UIImage imageNamed:@"icon_mainicon_normal"] forState:UIControlStateNormal];
+//    [self.switchBtn setBackgroundImage:[UIImage imageNamed:@"icon_mainicon_pressed"] forState:UIControlStateSelected];
     [self.switchBtn addTarget:self action:@selector(onActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.switchBtn setAccessibilityLabel:NSLocalizedString(@"Annotation Bar", @"")];
     [self addSubview:self.switchBtn];
@@ -91,9 +91,9 @@
     
     CGSize iconSize = IS_IPAD?CGSizeMake(51, 49):CGSizeMake(51, 45);
     
-    UIImage *image = [UIImage imageNamed:@"icon_mainicon_normal"];
+//    UIImage *image = [UIImage imageNamed:@"icon_mainicon_normal"];
     UIButton *penButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    penButton.frame = CGRectMake(image.size.width + 5, 5, iconSize.width, iconSize.height);
+//    penButton.frame = CGRectMake(image.size.width + 5, 5, iconSize.width, iconSize.height);
     [penButton setImage:[UIImage imageNamed:@"anno_icon_pen"] forState:UIControlStateNormal];
     [penButton setImage:[UIImage imageNamed:@"anno_icon_pen_selected"] forState:UIControlStateSelected];
     [penButton addTarget:self action:@selector(onPenButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
