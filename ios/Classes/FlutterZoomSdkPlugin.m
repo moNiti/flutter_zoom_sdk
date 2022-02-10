@@ -426,8 +426,8 @@ FlutterMethodChannel* channel;
     MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
     
     UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert"
-                                                          message:[NSString stringWithFormat:@"Host allow you to umute righ now."]
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
+                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
                                                    preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
@@ -451,8 +451,8 @@ FlutterMethodChannel* channel;
     MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
     
     UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alert"
-                                                          message:[NSString stringWithFormat:@"Host allow you to talk righ now."]
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
+                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
                                                    preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
