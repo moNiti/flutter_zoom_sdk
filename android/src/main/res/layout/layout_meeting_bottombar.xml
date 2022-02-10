@@ -90,7 +90,7 @@
             android:duplicateParentState="true"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:text="ลงคะแนนเสียง" />
+            android:text="LIVLY Vote" />
 
     </LinearLayout>
 

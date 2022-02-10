@@ -198,7 +198,7 @@
     {
         _voteButton = [[UIButton alloc] init];
         [_voteButton setImage:[UIImage imageNamed:@"vote"] forState:UIControlStateNormal];
-        [_voteButton setTitle:@"ลงคะแนนเสียง" forState:UIControlStateNormal];
+        [_voteButton setTitle:@"LIVLY Vote" forState:UIControlStateNormal];
         _voteButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
         _voteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _voteButton.tag = kTagButtonVote;
