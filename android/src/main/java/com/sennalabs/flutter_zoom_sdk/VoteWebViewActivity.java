@@ -1,24 +1,21 @@
 package com.sennalabs.flutter_zoom_sdk;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class VoteWebViewActivity extends Activity {
+public class VoteWebViewActivity extends AppCompatActivity {
     private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vote_webview);
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("ลงคะแนนเสียง");
 
@@ -31,9 +28,8 @@ public class VoteWebViewActivity extends Activity {
 
         browser.loadUrl(url);
     }
-
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         finish();
         return true;
     }

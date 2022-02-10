@@ -38,7 +38,8 @@
             android:hardwareAccelerated="true"
             android:theme="@style/ZMTheme.SubWindow" />
         <activity android:name=".VoteWebViewActivity"
-            android:configChanges="screenSize"/>
+            android:configChanges="screenSize"
+            android:theme="@style/Theme.AppCompat.Light"/>
     </application>
 
 </manifest>
