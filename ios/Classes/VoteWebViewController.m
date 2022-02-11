@@ -22,11 +22,11 @@
     CGRect bound= [UIScreen mainScreen].bounds;
     self.modalPresentationStyle = UIModalPresentationFullScreen;
     WKWebViewConfiguration *config =  [[WKWebViewConfiguration alloc] init];
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, safeTop + 70, bound.size.width, bound.size.height) configuration:config];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, safeTop + 45, bound.size.width, bound.size.height) configuration:config];
        
     
     UINavigationBar *navBar = [[UINavigationBar alloc] init];
-    navBar.frame = CGRectMake(0, safeTop, bound.size.width, 70);
+    navBar.frame = CGRectMake(0, safeTop, bound.size.width, 45);
     [navBar setBackgroundColor:[UIColor whiteColor]];
     [navBar setBarStyle:UIBarStyleBlack];
     navBar.barTintColor = [UIColor whiteColor];
