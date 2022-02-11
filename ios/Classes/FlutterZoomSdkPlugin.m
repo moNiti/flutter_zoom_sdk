@@ -1,5 +1,6 @@
 #import "FlutterZoomSdkPlugin.h"
 #import <MobileRTC/MobileRTC.h>
+#import "VoteWebViewController.h"
 
 // Support project import fallback if the generated compatibility header
 // is not copied when this plugin is created as a library.
@@ -483,7 +484,13 @@ FlutterMethodChannel* channel;
     
     [channel invokeMethod:@"get_vote_url" arguments:nil result:^(id  _Nullable result) {
         if(result) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:result]];
+            VoteWebViewController *webViewController = [[VoteWebViewController alloc] init];
+            webViewController.url = result;
+            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
+            webViewController.view.frame = rootVC.view.bounds;
+            [rootVC presentViewController:webViewController animated:YES completion:nil];
+            
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:result]];
         }
     }];
 }
