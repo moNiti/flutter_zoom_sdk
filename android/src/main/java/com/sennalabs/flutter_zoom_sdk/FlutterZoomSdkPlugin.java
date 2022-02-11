@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 
@@ -228,9 +229,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
                         if (url != null && !url.isEmpty()) {
                             System.out.println("URL IS NOT EMPTY");
                             try {
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(browserIntent);
+                                Intent webViewIntent = new Intent(mContext, VoteWebViewActivity.class);
+                                webViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                webViewIntent.putExtra("url", o.toString());
+                                mContext.startActivity(webViewIntent);
                             } catch (Exception ex) {
                                 System.out.println("EXECPTION =>>>>>>>> " + ex.toString());
                             }
