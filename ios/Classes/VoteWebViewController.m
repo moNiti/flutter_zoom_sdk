@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 #import <WebKit/WKWebView.h>
 #import <WebKit/WKWebViewConfiguration.h>
 #import "VoteWebViewController.h"
@@ -23,6 +24,7 @@
     self.modalPresentationStyle = UIModalPresentationFullScreen;
     WKWebViewConfiguration *config =  [[WKWebViewConfiguration alloc] init];
     WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, safeTop + 45, bound.size.width, bound.size.height) configuration:config];
+    [webView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
        
     
     UINavigationBar *navBar = [[UINavigationBar alloc] init];
@@ -46,8 +48,8 @@
     [self.view addSubview:navBar];
     
     NSURL *url = [NSURL URLWithString:self.url];
-        NSURLRequest *req = [NSURLRequest requestWithURL:url];
-        [webView loadRequest:req];
+    NSURLRequest *req = [NSURLRequest requestWithURL:url];
+    [webView loadRequest:req];
 }
 
 - (void)backButtonPressed:(id)sender {

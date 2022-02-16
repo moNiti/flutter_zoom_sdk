@@ -14,7 +14,6 @@
 //
 #import "CustomMeetingViewController.h"
 
-
 @interface CustomMeetingViewController ()<UIGestureRecognizerDelegate, AnnoFloatBarViewDelegate, MobileRTCAnnotationServiceDelegate, MobileRTCWaitingRoomServiceDelegate>
 
 @end
@@ -95,6 +94,8 @@
     
     self.panGesture = nil;
     
+    self.actionPresenter = nil;
+    self.sharePresenter = nil;
 }
 
 - (void)viewDidLayoutSubviews
@@ -137,15 +138,14 @@
     self.isShowTopBottonPanel = !self.isShowTopBottonPanel;
 }
 
-- (void)showAttendeeVideo:(MobileRTCVideoView*)videoView withUserID:(NSUInteger)userID
-{
-    [videoView showAttendeeVideoWithUserID:userID];
-    [videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
-}
+//- (void)showAttendeeVideo:(MobileRTCVideoView*)videoView withUserID:(NSUInteger)userID
+//{
+//    [videoView showAttendeeVideoWithUserID:userID];
+//    [videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
+//}
 
 - (void)updateVideoOrShare
 {
-    NSLog(@"CALL UPDATE VIDEO OR SHARE");
     if (self.remoteShareVC.parentViewController)
     {
         [self.remoteShareVC updateShareView];
@@ -153,11 +153,9 @@
     
     [self.thumbView updateThumbViewVideo];
     if (self.pinUserId) {
-        bool result = [self.videoVC.videoView showAttendeeVideoWithUserID:self.pinUserId];
-        NSLog(@"SHOW PINUSER RESULT => %d", result);
+        [self.videoVC.videoView showAttendeeVideoWithUserID:self.pinUserId];
     } else {
-        bool result = [self.videoVC.videoView showAttendeeVideoWithUserID:[[[MobileRTC sharedRTC] getMeetingService] myselfUserID]];
-        NSLog(@"SHOW MYSELF RESULT => %d", result);
+        [self.videoVC.videoView showAttendeeVideoWithUserID:[[[MobileRTC sharedRTC] getMeetingService] myselfUserID]];
     }
 }
 
@@ -169,6 +167,11 @@
 - (void)updateMyVideoStatus
 {
     [self.bottomPanelView updateMyVideoStatus];
+}
+
+- (void)updateMyShareStatus
+{
+//    [self.bottomPanelView updateMyShareStatus];
 }
 
 - (void)removeAllSubView
@@ -192,25 +195,22 @@
 
 - (void)showVideoView
 {
-    NSLog(@"=>>>> ShowVideoView");
     [self removeAllSubView];
     [self showSubView:self.videoVC];
 }
 
 - (void)showLocalShareView
 {
-    NSLog(@"=>>>> showLocalShareView");
     [self removeAllSubView];
     [self showSubView:self.localShareVC];
-    [[[MobileRTC sharedRTC] getMeetingService] appShareWithView:self.localShareVC.view];
-//    [self.sharePresenter appShareWithView:self.localShareVC.view];
+//    [[[MobileRTC sharedRTC] getMeetingService] appShareWithView:self.localShareVC.view];
+    [self.sharePresenter appShareWithView:self.localShareVC.view];
     
     [self showAnnotationView];
 }
 
 - (void)showRemoteShareView
 {
-    NSLog(@"=>>>>> showRemoteShareView");
     [self removeAllSubView];
     [self showSubView:self.remoteShareVC];
     
@@ -319,12 +319,6 @@
     return _remoteShareVC;
 }
 
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
-
 - (SDKActionPresenter *)actionPresenter
 {
     if (!_actionPresenter)
@@ -334,6 +328,22 @@
     }
     return _actionPresenter;
 }
+
+- (SDKSharePresenter *)sharePresenter
+{
+    if (!_sharePresenter)
+    {
+        _sharePresenter = [[SDKSharePresenter alloc] init];
+        
+    }
+    return _sharePresenter;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
 
 #pragma mark - Shrink & Delegate
 
@@ -535,5 +545,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-@end
 
+@end

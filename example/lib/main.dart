@@ -46,9 +46,9 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () async {
                   debugPrint('START ON PRESS');
                   debugPrint('START SET URL');
-                  await Future.delayed(Duration(seconds: 3));
-                  FlutterZoomSdk().setVoteUrl = "https://flutter.dev";
-                  await Future.delayed(Duration(seconds: 2));
+                  // await Future.delayed(Duration(seconds: 3));
+                  FlutterZoomSdk().setVoteUrl = "https://www.google.com";
+                  // await Future.delayed(Duration(seconds: 2));
                   debugPrint('SUCCESS SET VOTE URL');
                   debugPrint('START OPEN NATIVE VIEW');
 
@@ -56,9 +56,9 @@ class _MyAppState extends State<MyApp> {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "95544141892",
+                      meetingNo: "99017743006",
                       email: "momo_niti@hotmail.com",
-                      password: "285458",
+                      password: "207190",
                       webinarToken:
                           "Z1bt6zeiw92vtgQTGEPR4PBv7HARHZRVg1mAIWO5XyA.DQMAAAAWCwjGXRZjY1JfeGlrTVRfQ0xVSTZ2SUlFRmVBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));

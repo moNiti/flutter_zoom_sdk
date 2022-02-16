@@ -226,6 +226,19 @@ const CGFloat BTN_HEIGHT = 24;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    NSUInteger activeUserId = [ms activeUserID];
+    NSUInteger activeShareUserId = [ms activeShareUserID];
+    
+    if(activeUserId && activeShareUserId) {
+//        IF HAVE SPEAKER AND SHARE USER
+        MobileRTCMeetingUserInfo *userInfo = [ms userInfoByID:activeUserId];
+        if(userInfo.userRole != MobileRTCUserRole_Attendee && [ms isUserVideoSending:activeUserId]) {
+            return 1;
+        }
+
+    }
+    
     NSInteger count = [[[[MobileRTC sharedRTC] getMeetingService] getInMeetingUserList] count];
     return count;
 }
