@@ -47,11 +47,11 @@
     self.videoView.frame = frame;
 }
 
-- (MobileRTCActiveVideoView*)videoView
+- (MobileRTCVideoView*)videoView
 {
-    if (!_videoView)
+    if (!_videoView) 
     {
-        _videoView = [[MobileRTCActiveVideoView alloc] initWithFrame:self.view.bounds];
+        _videoView = [[MobileRTCVideoView alloc] initWithFrame:self.view.bounds];
         [_videoView setVideoAspect:MobileRTCVideoAspect_PanAndScan];
     }
     return _videoView;

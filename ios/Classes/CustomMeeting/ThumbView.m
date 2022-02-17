@@ -216,29 +216,11 @@ const CGFloat BTN_HEIGHT = 24;
     }
     
     self.thumbHideButton.frame = btnFrame;
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    if(ms && [ms isWebinarAttendee]) {
-        [self.thumbHideButton setImage:[UIImage imageNamed:btnImageName] forState:UIControlStateNormal];
-    }
-   
-    
+    [self.thumbHideButton setImage:[UIImage imageNamed:btnImageName] forState:UIControlStateNormal];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    NSUInteger activeUserId = [ms activeUserID];
-    NSUInteger activeShareUserId = [ms activeShareUserID];
-    
-    if(activeUserId && activeShareUserId) {
-//        IF HAVE SPEAKER AND SHARE USER
-        MobileRTCMeetingUserInfo *userInfo = [ms userInfoByID:activeUserId];
-        if(userInfo.userRole != MobileRTCUserRole_Attendee && [ms isUserVideoSending:activeUserId]) {
-            return 1;
-        }
-
-    }
-    
     NSInteger count = [[[[MobileRTC sharedRTC] getMeetingService] getInMeetingUserList] count];
     return count;
 }
@@ -387,11 +369,11 @@ const CGFloat BTN_HEIGHT = 24;
                                                                     }
                                                                  }]];
             
-//            [alertController addAction:[UIAlertAction actionWithTitle:@"Change name to Test"
-//                                                                style:UIAlertActionStyleDefault
-//                                                                  handler:^(UIAlertAction *action) {
-//                                                                        [ms changeName:[NSString stringWithFormat:@"Test:%ld", indexPath.row] withUserID:userID];
-//                                                                  }]];
+            // [alertController addAction:[UIAlertAction actionWithTitle:@"Change name to Test"
+            //                                                     style:UIAlertActionStyleDefault
+            //                                                       handler:^(UIAlertAction *action) {
+            //                                                             [ms changeName:[NSString stringWithFormat:@"Test:%ld", indexPath.row] withUserID:userID];
+            //                                                       }]];
             if ([userInfo handRaised]) {
                 [alertController addAction:[UIAlertAction actionWithTitle:@"Lower the user hand"
                                                                 style:UIAlertActionStyleDefault
