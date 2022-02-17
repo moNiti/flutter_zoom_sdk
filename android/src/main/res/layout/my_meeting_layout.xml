@@ -110,20 +110,10 @@
         android:visibility="gone" />
 
 
-    <TextView
-        android:id="@+id/meetingNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:ellipsize="end"
-        android:maxLines="2"></TextView>
-
-
     <com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.MeetingOptionBar
         android:id="@+id/meeting_option_contain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
         android:visibility="invisible"></com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.MeetingOptionBar>
 
 

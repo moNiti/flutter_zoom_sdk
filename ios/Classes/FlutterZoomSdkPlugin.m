@@ -1,5 +1,6 @@
 #import "FlutterZoomSdkPlugin.h"
-#import <MobileRTC/MobileRTC.h>
+#import "FlutterZoomSdkPlugin+MeetingServiceDelegate.h"
+#import "FlutterZoomSdkPlugin+CustomizedUIDelegate.h"
 #import "VoteWebViewController.h"
 
 // Support project import fallback if the generated compatibility header
@@ -22,6 +23,16 @@ FlutterMethodChannel* channel;
         eventChannelWithName:@"flutter_zoom_sdk_event_stream"
               binaryMessenger:[registrar messenger]];
     [eventChannel setStreamHandler:instance];
+}
+
+- (void)initDelegate
+{
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    if (ms)
+    {
+        ms.delegate = self;
+        ms.customizedUImeetingDelegate = self;
+    }
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -70,8 +81,7 @@ FlutterMethodChannel* channel;
     
     if (ms)
     {
-        ms.delegate = self;
-        ms.customizedUImeetingDelegate = self;
+        [self initDelegate];
         //For Join a meeting with password
         MobileRTCMeetingJoinParam * joinParam = [[MobileRTCMeetingJoinParam alloc] init];
         joinParam.userName =  call.arguments[@"displayName"];
@@ -80,6 +90,8 @@ FlutterMethodChannel* channel;
         joinParam.webinarToken =  call.arguments[@"webinarToken"];;
 //        ENABLE CUSTOMIZE MEETING BEFORE JOIN
         [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
+        [[MobileRTC sharedRTC] getMeetingSettings].meetingInviteHidden = YES;
+
        
 //        WEBINAR NEED REGISTER
         self.displayName = call.arguments[@"displayName"];
@@ -142,6 +154,21 @@ FlutterMethodChannel* channel;
     result(inStr);
 }
 
+#pragma mark - METHOD HANDLER
+
++(void) openVote {
+    
+    [channel invokeMethod:@"get_vote_url" arguments:nil result:^(id  _Nullable result) {
+        if(result) {
+            VoteWebViewController *webViewController = [[VoteWebViewController alloc] init];
+            webViewController.url = result;
+            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
+            webViewController.view.frame = rootVC.view.bounds;
+            [rootVC presentViewController:webViewController animated:YES completion:nil];
+        }
+    }];
+}
+
 #pragma mark - MobileRTCAuthDelegate
 /**
 * To monitor the status and catch errors that might occur during the authorization process, implement the onMobileRTCAuthReturn method
@@ -166,16 +193,6 @@ FlutterMethodChannel* channel;
 }
 
 #pragma mark - FlutterEventSink
--(void)onMeetingStateChange:(MobileRTCMeetingState)state{
-    if (state == MobileRTCMeetingState_InMeeting) {
-           [self.customMeetingVC.videoVC.preVideoView removeFromSuperview];
-    }
-    if(state == MobileRTCMeetingState_InMeeting) {
-        NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
-        [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
-    }
-    _eventSink([self getStateMessage:state]);
-}
 
 - (FlutterError *)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)events {
     NSLog(@"ON LISTEN WITH ARGUMENTS");
@@ -187,7 +204,6 @@ FlutterMethodChannel* channel;
         return error;
     }
     NSLog(@"CALL ON LISTEN WITH ARGUMENT");
-    ms.delegate = self;
     
     return nil;
 }
@@ -196,302 +212,5 @@ FlutterMethodChannel* channel;
     NSLog(@"ON CANCEL WITH ARGUMENTS");
     _eventSink = nil;
     return nil;
-}
-- (void)onMeetingError:(MobileRTCMeetError)error message:(NSString *)message{
-    NSLog(@"MEETING ERROR =>>>>>>> %@", message);
-}
-
-#pragma mark - Customize UI implement
-
-- (void)onInitMeetingView {
-    NSLog(@" =>>>>>>>>>>>>>>========= >>onInitMeetingView....");
-    CustomMeetingViewController *vc = [[CustomMeetingViewController alloc] init];
-    self.customMeetingVC = vc;
-   
-    UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
-    [rootVC addChildViewController:self.customMeetingVC];
-    [rootVC.view addSubview:self.customMeetingVC.view];
-    [self.customMeetingVC didMoveToParentViewController:rootVC];
-    
-    self.customMeetingVC.view.frame = rootVC.view.bounds;
-    
-}
-- (void)onDestroyMeetingView {
-    
-    NSLog(@"onDestroyMeetingView....");
-    
-    [self.customMeetingVC willMoveToParentViewController:nil];
-    [self.customMeetingVC.view removeFromSuperview];
-    [self.customMeetingVC removeFromParentViewController];
-    self.customMeetingVC = nil;
-}
-
-#pragma mark - WEBINAR NEED EMAIL implement
-
-- (void)onSinkJoinWebinarNeedUserNameAndEmailWithCompletion:(BOOL (^_Nonnull)(NSString * _Nonnull username, NSString * _Nonnull email, BOOL cancel))completion
-{
-    if (completion)
-    {
-        BOOL ret = completion(self.displayName, self.email, NO);
-        NSLog(@"%zd",ret);
-    }
-}
-
-#pragma mark - WATING ROOM
-- (void)onJBHWaitingWithCmd:(JBHCmd)cmd {
-    NSLog(@"=>>>>>> CALL ON JBHWaitingWithCmd");
-    UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
-    
-//
-//    self.customMeetingVC.view.frame = rootVC.view.bounds;
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:rootVC];
-    switch (cmd) {
-        case JBHCmd_Show:
-        {
-            // Get view controller.
-            UIViewController *vc = [UIViewController new];
-            
-            // CREATE Waiting Label.
-            UILabel *_titleLabel = [[UILabel alloc] initWithFrame: CGRectMake((rootVC.view.frame.size.width-120)/2, 30, 120, 40)];
-            _titleLabel.textAlignment = NSTextAlignmentCenter;
-            _titleLabel.textColor = [UIColor whiteColor];
-            _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-            _titleLabel.text = @"กำลังเข้าสู่ห้องประชุม...";
-            [_titleLabel sizeToFit];
-      
-//            ADD SUB VIEW
-            [vc.view addSubview:_titleLabel];
-
-            // Change modal present style.
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
-            [rootVC presentViewController:vc animated:YES completion:nil];
-            vc.view.frame = rootVC.view.bounds;
-        }
-            break;
-            
-        case JBHCmd_Hide:
-        default:
-        {
-            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
-            [rootVC dismissViewControllerAnimated:YES completion:NULL];
-        }
-            break;
-    }
-}
-
-
-#pragma mark Meeting Delegate
-//- (void)onMeetingStateChange:(MobileRTCMeetingState)state
-//{
-//    NSLog(@"==========>onMeetingStateChange");
-//    if (state == MobileRTCMeetingState_InMeeting) {
-//        [self.customMeetingVC.videoVC.preVideoView removeFromSuperview];
-//    }
-//}
-
-
-- (void)onSinkMeetingActiveVideo:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingActiveVideo");
-    self.customMeetingVC.pinUserId = userID;
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onSinkMeetingPreviewStopped
-{
-    NSLog(@"==========>onSinkMeetingPreviewStopped");
-}
-
-- (void)onSinkMeetingAudioStatusChange:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingAudioStatusChange");
-    [self.customMeetingVC updateMyAudioStatus];
-
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onSinkMeetingMyAudioTypeChange
-{
-    NSLog(@"==========>onSinkMeetingMyAudioTypeChange");
-    [self.customMeetingVC updateMyAudioStatus];
-}
-
-- (void)onSinkMeetingVideoStatusChange:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingVideoStatusChange");
-    [self.customMeetingVC updateMyVideoStatus];
-
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onMyVideoStateChange
-{
-    NSLog(@"==========>onMyVideoStateChange");
-    [self.customMeetingVC updateMyVideoStatus];
-
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onSinkMeetingUserJoin:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingUserJoin");
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onSinkMeetingUserLeft:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingUserLeft");
-    [self.customMeetingVC updateVideoOrShare];
-}
-
-- (void)onSinkMeetingActiveShare:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingActiveShare");
-    BOOL sharing = (0 != userID);
-    if (sharing)
-    {
-//        self.topPanelView.shrinkBtn.hidden = YES;
-        MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-        //Local Side Share
-        if ([ms isSameUser:[ms myselfUserID] compareTo:userID])
-        {
-            [self.customMeetingVC showLocalShareView];
-        }
-        //Remote Side Share
-        else
-        {
-            self.customMeetingVC.remoteShareVC.activeShareID = userID;
-            [self.customMeetingVC showRemoteShareView];
-        }
-    }
-    else
-    {
-//        self.topPanelView.shrinkBtn.hidden = NO;
-        [self.customMeetingVC hideAnnotationView];
-        [self.customMeetingVC showVideoView];
-       
-    }
-}
-
-- (void)onSinkShareSizeChange:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkShareSizeChange");
-    if (!self.customMeetingVC.remoteShareVC.parentViewController)
-        return;
-
-    [self.customMeetingVC.remoteShareVC.shareView changeShareScaleWithUserID:userID];
-}
-
-- (void)onSinkMeetingShareReceiving:(NSUInteger)userID
-{
-    NSLog(@"==========>onSinkMeetingShareReceiving");
-    if (!self.customMeetingVC.remoteShareVC.parentViewController)
-        return;
-
-    [self.customMeetingVC.remoteShareVC.shareView changeShareScaleWithUserID:userID];
-}
-
-- (void)onWaitingRoomStatusChange:(BOOL)needWaiting
-{
-    NSLog(@"==========>onWaitingRoomStatusChange");
-    if (needWaiting)
-    {
-        UIViewController *vc = [UIViewController new];
-        
-        vc.title = @"Need wait for host Approve";
-        
-        UIBarButtonItem *leaveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Leave", @"") style:UIBarButtonItemStylePlain target:self action:@selector(onEndButtonClick:)];
-        [vc.navigationItem setRightBarButtonItem:leaveItem];
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.customMeetingVC presentViewController:nav animated:YES completion:NULL];
-        
-    }
-    else
-    {
-        [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
-    }
-}
-
-- (void)onEndButtonClick:(id)sender
-{
-    NSLog(@"==========>onEndButtonClick");
-    [self.customMeetingVC.actionPresenter leaveMeeting];
-    [self.customMeetingVC dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)onSinkMeetingAudioRequestUnmuteByHost
-{
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    
-    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
-                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
-                                                   preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:nil
-                               ]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-        [ms muteMyAudio:NO];
-        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
-    }
-                               ]];
-    
-    [ topViewController presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)onSinkSelfAllowTalkNotification
-{
-    NSLog(@"MobileRTC onSinkSelfAllowTalkNotification");
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    
-    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"The host would like you to speak"
-                                                          message:[NSString stringWithFormat:@"If you choose to unmute, others in the webinar will be able to hear you. If the host or panelists decide to record, livestream, or archive the webinar after you unmute, your voice will be include."]
-                                                   preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Stay mute"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:nil
-                               ]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Unmute"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-        [ms muteMyAudio:NO];
-        [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
-    }
-                               ]];
-    
-    [ topViewController presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)onSinkSelfDisallowTalkNotification {
-    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
-}
-
--(void) onMyAudioStateChange {
-    [self.customMeetingVC.bottomPanelView updateMyAudioStatus];
-}
-#pragma mark - METHOD HANDLER
-
-+(void) openVote {
-    
-    [channel invokeMethod:@"get_vote_url" arguments:nil result:^(id  _Nullable result) {
-        if(result) {
-            VoteWebViewController *webViewController = [[VoteWebViewController alloc] init];
-            webViewController.url = result;
-            UIViewController *rootVC  = [UIApplication sharedApplication].delegate.window.rootViewController;
-            webViewController.view.frame = rootVC.view.bounds;
-            [rootVC presentViewController:webViewController animated:YES completion:nil];
-            
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:result]];
-        }
-    }];
 }
 @end

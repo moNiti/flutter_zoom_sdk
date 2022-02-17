@@ -5,7 +5,6 @@
 //  Created by Niti Jirakarnwuttikrai on 27/1/2565 BE.
 //
 
-#import <MobileRTC/MobileRTC.h>
 #import <UIKit/UIKit.h>
 #import "TopPanelView.h"
 #import "BottomPanelView.h"
@@ -15,10 +14,9 @@
 #import "LocalShareViewController.h"
 #import "VideoViewController.h"
 #import "AnnoFloatBarView.h"
-#import "Sample-Prefix.h"
 #import "SDKActionPresenter.h"
-#import "SDKAudioPresenter.h"
-
+#import "SDKSharePresenter.h"
+#import "Sample-Prefix.h"
 
 @interface CustomMeetingViewController : UIViewController
 
@@ -41,11 +39,12 @@
 @property (strong, nonatomic) AnnoFloatBarView * annoFloatBarView;
 
 @property (strong, nonatomic) SDKActionPresenter     *actionPresenter;
-
+@property (strong, nonatomic) SDKSharePresenter      *sharePresenter;
 
 - (void)updateVideoOrShare;
 - (void)updateMyAudioStatus;
 - (void)updateMyVideoStatus;
+- (void)updateMyShareStatus;
 
 - (void)showVideoView;
 - (void)showRemoteShareView;

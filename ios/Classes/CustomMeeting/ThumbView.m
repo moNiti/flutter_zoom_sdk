@@ -216,12 +216,7 @@ const CGFloat BTN_HEIGHT = 24;
     }
     
     self.thumbHideButton.frame = btnFrame;
-    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
-    if(ms && [ms isWebinarAttendee]) {
-        [self.thumbHideButton setImage:[UIImage imageNamed:btnImageName] forState:UIControlStateNormal];
-    }
-   
-    
+    [self.thumbHideButton setImage:[UIImage imageNamed:btnImageName] forState:UIControlStateNormal];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -374,11 +369,11 @@ const CGFloat BTN_HEIGHT = 24;
                                                                     }
                                                                  }]];
             
-//            [alertController addAction:[UIAlertAction actionWithTitle:@"Change name to Test"
-//                                                                style:UIAlertActionStyleDefault
-//                                                                  handler:^(UIAlertAction *action) {
-//                                                                        [ms changeName:[NSString stringWithFormat:@"Test:%ld", indexPath.row] withUserID:userID];
-//                                                                  }]];
+            // [alertController addAction:[UIAlertAction actionWithTitle:@"Change name to Test"
+            //                                                     style:UIAlertActionStyleDefault
+            //                                                       handler:^(UIAlertAction *action) {
+            //                                                             [ms changeName:[NSString stringWithFormat:@"Test:%ld", indexPath.row] withUserID:userID];
+            //                                                       }]];
             if ([userInfo handRaised]) {
                 [alertController addAction:[UIAlertAction actionWithTitle:@"Lower the user hand"
                                                                 style:UIAlertActionStyleDefault
