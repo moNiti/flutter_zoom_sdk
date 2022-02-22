@@ -31,7 +31,7 @@ FlutterMethodChannel* channel;
     if (ms)
     {
         ms.delegate = self;
-        ms.customizedUImeetingDelegate = self;
+//        ms.customizedUImeetingDelegate = self;
     }
 }
 
@@ -89,10 +89,13 @@ FlutterMethodChannel* channel;
         joinParam.password =  call.arguments[@"password"];
         joinParam.webinarToken =  call.arguments[@"webinarToken"];;
 //        ENABLE CUSTOMIZE MEETING BEFORE JOIN
-        [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
+//        [[MobileRTC sharedRTC] getMeetingSettings].enableCustomMeeting = YES;
+        [[MobileRTC sharedRTC] getMeetingSettings].topBarHidden = YES;
+        [[MobileRTC sharedRTC] getMeetingSettings].recordButtonHidden = YES;
         [[MobileRTC sharedRTC] getMeetingSettings].meetingInviteHidden = YES;
+        
+    
 
-       
 //        WEBINAR NEED REGISTER
         self.displayName = call.arguments[@"displayName"];
         self.email = call.arguments[@"email"];

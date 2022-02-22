@@ -111,11 +111,11 @@ public class StatusStreamHandler implements EventChannel.StreamHandler {
 
     private void showMeetingUi() {
         if (ZoomSDK.getInstance().getMeetingSettingsHelper().isCustomizedMeetingUIEnabled()) {
-            Intent intent = new Intent(context, MyMeetingActivity.class);
-            intent.putExtra("from", MyMeetingActivity.JOIN_FROM_APIUSER);
+//            Intent intent = new Intent(context, MyMeetingActivity.class);
+//            intent.putExtra("from", MyMeetingActivity.JOIN_FROM_APIUSER);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(intent);
         }
     }
 

@@ -28,6 +28,7 @@ import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.ZoomError;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKInitParams;
@@ -181,10 +182,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         JoinMeetingOptions opts = new JoinMeetingOptions();
         opts.no_webinar_register_dialog = true;
         opts.webinar_token = options.get("webinarToken");
-
-//        opts.no_invite = false;
-//        opts.no_share = parseBoolean(options, "disableShare");
-//        opts.no_titlebar =  parseBoolean(options, "disableTitlebar");
+        opts.no_invite = true;
+        opts.no_share = true;
+        opts.no_titlebar =  true;
 //        opts.no_driving_mode = parseBoolean(options, "disableDrive");
 //        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
 //        opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
@@ -202,13 +202,15 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         params.password = options.get("password");
 
 
+
         this.displayName = options.get("displayName");
         this.email = options.get("email");
 
 
 
-        ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(true);
-        ZoomSDK.getInstance().getSmsService().enableZoomAuthRealNameMeetingUIShown(false);
+        ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedMeetingUIEnabled(false);
+        ZoomSDK.getInstance().getInMeetingService().allowParticipantsToRename(false);
+        ZoomSDK.getInstance().getZoomUIService().enableMinimizeMeeting(true);
         meetingService.joinMeetingWithParams(context, params, opts);
 
         MeetingStatus status = meetingService.getMeetingStatus();

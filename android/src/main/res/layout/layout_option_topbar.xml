@@ -19,22 +19,22 @@
             android:src="@drawable/logo" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/btnSwitchCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/btnBack"
-        android:layout_marginLeft="6dp"
-        android:gravity="center">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/btnSwitchCamera"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_toRightOf="@+id/btnBack"-->
+<!--        android:layout_marginLeft="6dp"-->
+<!--        android:gravity="center">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:focusable="false"
-            android:src="@drawable/icon_switch_camera" />
-    </LinearLayout>
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:duplicateParentState="true"-->
+<!--            android:focusable="false"-->
+<!--            android:src="@drawable/icon_switch_camera" />-->
+<!--    </LinearLayout>-->
 
 
     <Button
