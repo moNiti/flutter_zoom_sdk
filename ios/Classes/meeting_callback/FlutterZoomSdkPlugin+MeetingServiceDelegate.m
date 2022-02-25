@@ -83,6 +83,16 @@
     if(state == MobileRTCMeetingState_InMeeting) {
         NSUInteger userId =  [[[MobileRTC sharedRTC] getMeetingService] myselfUserID];
         [[[MobileRTC sharedRTC] getMeetingService] changeName:self.displayName withUserID:userId];
+        
+        UIView *meetingView  = [[[MobileRTC sharedRTC] getMeetingService] meetingView];
+        if(meetingView) {
+            NSLog(@"=>>>>>>>>>>>>>>> YES WEHAVE MEETING VIEW");
+            TopPanelView *top = [[TopPanelView alloc] init];
+            
+            [meetingView addSubview: top];
+            [top updateFrame];
+           
+        }
     }
     self.eventSink([self getStateMessage:state]);
 }
