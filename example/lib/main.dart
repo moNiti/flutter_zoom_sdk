@@ -56,9 +56,9 @@ class _MyAppState extends State<MyApp> {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "98791537817",
+                      meetingNo: "99085112262",
                       email: "fah@sennalabs.com",
-                      password: "962093",
+                      password: "902362",
                       webinarToken:
                           "dPfF8dvAuOOywG2lIZwxtLdNwsX67816PtVE7V1Ajts.DQMAAAAXDeranhZXamtwb0dlOVR5MkZBY0dsNjNGdDJBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));

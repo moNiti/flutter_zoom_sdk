@@ -442,24 +442,24 @@ const CGFloat BTN_HEIGHT = 24;
                                                             }]];
         }
         
-        NSLog(@"LiveTranscription: canAssignOthersToSendCC===>%@", @([ms canAssignOthersToSendCC]));
-        NSLog(@"LiveTranscription: canBeAssignedToSendCC===>%@", @([ms canBeAssignedToSendCC:userID]));
-        if([ms isMeetingSupportCC] && [ms isLiveTranscriptionFeatureEnabled] && [ms canAssignOthersToSendCC]) {
-            if ([ms canBeAssignedToSendCC:userID]) {
-                [alertController addAction:[UIAlertAction actionWithTitle:@"assign CC privilege"
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction *action) {
-                    BOOL ret = [ms assignCCPrivilege:userID];
-                    NSLog(@"assignCCPrivilege===> %@", @(ret));
-                                                                }]];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"withdraw CC privilege"
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction *action) {
-                    BOOL ret = [ms withdrawCCPrivilege:userID];
-                    NSLog(@"withdrawCCPrivilege===> %@", @(ret));
-                                                                }]];
-            }
-        }
+//        NSLog(@"LiveTranscription: canAssignOthersToSendCC===>%@", @([ms canAssignOthersToSendCC]));
+//        NSLog(@"LiveTranscription: canBeAssignedToSendCC===>%@", @([ms canBeAssignedToSendCC:userID]));
+//        if([ms isMeetingSupportCC] && [ms isLiveTranscriptionFeatureEnabled] && [ms canAssignOthersToSendCC]) {
+//            if ([ms canBeAssignedToSendCC:userID]) {
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"assign CC privilege"
+//                                                                  style:UIAlertActionStyleDefault
+//                                                                handler:^(UIAlertAction *action) {
+//                    BOOL ret = [ms assignCCPrivilege:userID];
+//                    NSLog(@"assignCCPrivilege===> %@", @(ret));
+//                                                                }]];
+//                [alertController addAction:[UIAlertAction actionWithTitle:@"withdraw CC privilege"
+//                                                                  style:UIAlertActionStyleDefault
+//                                                                handler:^(UIAlertAction *action) {
+//                    BOOL ret = [ms withdrawCCPrivilege:userID];
+//                    NSLog(@"withdrawCCPrivilege===> %@", @(ret));
+//                                                                }]];
+//            }
+//        }
         
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)                                                                                 style:UIAlertActionStyleCancel
                                                           handler:^(UIAlertAction *action) {

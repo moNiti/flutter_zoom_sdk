@@ -481,12 +481,12 @@ typedef NS_ENUM(NSUInteger, BOActions) {
                 
                 MobileRTCBOOption *option = [[MobileRTCBOOption alloc] init];
                 option.countdownSeconds = MobileRTCBOStopCountDown_Seconds_30;
-                option.isParticipantCanChooseBO = NO;
-                option.isParticipantCanReturnToMainSessionAtAnyTime = NO;
-                option.isAutoMoveAllAssignedParticipantsEnabled = NO;
-                option.isBOTimerEnabled = YES;
-                option.isTimerAutoStopBOEnabled = NO;
-                option.timerDuration = 2 * 60;
+//                option.isParticipantCanChooseBO = NO;
+//                option.isParticipantCanReturnToMainSessionAtAnyTime = NO;
+//                option.isAutoMoveAllAssignedParticipantsEnabled = NO;
+//                option.isBOTimerEnabled = YES;
+//                option.isTimerAutoStopBOEnabled = NO;
+//                option.timerDuration = 2 * 60;
                 BOOL ret = [creator setBOOption:option];
                 
                 NSLog(@"creator setBOOption: %@", ret? @"Success" : @"Fail");
@@ -498,13 +498,14 @@ typedef NS_ENUM(NSUInteger, BOActions) {
                 @"isTimerAutoStopBOEnabled:%@\n"
                 @"timerDuration:%ds\n";
                 NSString *alertMessage = [NSString stringWithFormat:alertMessageFmt,
-                                          @"30 s",
-                                          option.isParticipantCanChooseBO ? @"Y": @"N",
-                                          option.isParticipantCanReturnToMainSessionAtAnyTime ? @"Y": @"N",
-                                          option.isAutoMoveAllAssignedParticipantsEnabled ? @"Y": @"N",
-                                          option.isBOTimerEnabled ? @"Y": @"N",
-                                          option.isTimerAutoStopBOEnabled ? @"Y": @"N",
-                                          option.timerDuration];
+                                          @"30 s"
+//                                          option.isParticipantCanChooseBO ? @"Y": @"N",
+//                                          option.isParticipantCanReturnToMainSessionAtAnyTime ? @"Y": @"N",
+//                                          option.isAutoMoveAllAssignedParticipantsEnabled ? @"Y": @"N",
+//                                          option.isBOTimerEnabled ? @"Y": @"N",
+//                                          option.isTimerAutoStopBOEnabled ? @"Y": @"N",
+//                                          option.timerDuration
+                ];
                 
                 alertController = [UIAlertController alertControllerWithTitle:@"creator setBOOption"
                                                                       message:alertMessage
@@ -533,13 +534,15 @@ typedef NS_ENUM(NSUInteger, BOActions) {
                 @"isTimerAutoStopBOEnabled:%@\n"
                 @"timerDuration:%ds\n";
                 NSString *alertMessage = [NSString stringWithFormat:alertMessageFmt,
-                                          @(BOOption.countdownSeconds),
-                                          BOOption.isParticipantCanChooseBO ? @"Y": @"N",
-                                          BOOption.isParticipantCanReturnToMainSessionAtAnyTime ? @"Y": @"N",
-                                          BOOption.isAutoMoveAllAssignedParticipantsEnabled ? @"Y": @"N",
-                                          BOOption.isBOTimerEnabled ? @"Y": @"N",
-                                          BOOption.isTimerAutoStopBOEnabled ? @"Y": @"N",
-                                          BOOption.timerDuration];
+                                          @(BOOption.countdownSeconds)
+//                                          ,
+//                                          BOOption.isParticipantCanChooseBO ? @"Y": @"N",
+//                                          BOOption.isParticipantCanReturnToMainSessionAtAnyTime ? @"Y": @"N",
+//                                          BOOption.isAutoMoveAllAssignedParticipantsEnabled ? @"Y": @"N",
+//                                          BOOption.isBOTimerEnabled ? @"Y": @"N",
+//                                          BOOption.isTimerAutoStopBOEnabled ? @"Y": @"N",
+//                                          BOOption.timerDuration
+                ];
                 
                 alertController = [UIAlertController alertControllerWithTitle:@"creator getBOOption"
                                                                       message:alertMessage

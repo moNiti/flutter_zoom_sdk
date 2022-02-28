@@ -729,51 +729,51 @@
 //    }]];
     
 #pragma live transcription demo
-    NSLog(@"LiveTranscription: isMeetingSupportCC===>%@", @([ms isMeetingSupportCC]));
-    NSLog(@"LiveTranscription: isLiveTranscriptionFeatureEnabled===>%@", @([ms isLiveTranscriptionFeatureEnabled]));
-    NSLog(@"LiveTranscription: canStartLiveTranscription===>%@", @([ms canStartLiveTranscription]));
-    NSLog(@"LiveTranscription: isRequestToStartLiveTranscriptionEnabled===>%@", @([ms isRequestToStartLiveTranscriptionEnabled]));
-    if([ms isMeetingSupportCC] && [ms isLiveTranscriptionFeatureEnabled]) {
-        MobileRTCLiveTranscriptionStatus status = [ms getLiveTranscriptionStatus];
-        NSLog(@"LiveTranscription: MobileRTCLiveTranscriptionStatus===>%@", @(status));
-        
-        if ([ms isMeetingHost]) {
-            if ([ms canStartLiveTranscription]) {
-                if (MobileRTC_LiveTranscription_Status_Stop == status) {
-                    [alertController addAction:[UIAlertAction actionWithTitle:@"start live transcription"
-                                                                      style:UIAlertActionStyleDefault
-                                                                    handler:^(UIAlertAction *action) {
-                                                                        BOOL ret = [ms startLiveTranscription];
-                                                                        NSLog(@"LiveTranscription: startLiveTranscription===>%@",@(ret));
-                                                                    }]];
-                } else if (MobileRTC_LiveTranscription_Status_Start == status) {
-                    [alertController addAction:[UIAlertAction actionWithTitle:@"LiveTranscription: stop live transcription"
-                                                                      style:UIAlertActionStyleDefault
-                                                                    handler:^(UIAlertAction *action) {
-                                                                        BOOL ret = [ms stopLiveTranscription];
-                                                                        NSLog(@"LiveTranscription: stopLiveTranscription===>%@",@(ret));
-                                                                    }]];
-                }
-            }
-            
-            NSString *enableRequestToStartLiveTranscriptionString = [ms isRequestToStartLiveTranscriptionEnabled] ? @"unenable Request to start live transcription" : @"enable Request to start live transcription";
-            [alertController addAction:[UIAlertAction actionWithTitle:enableRequestToStartLiveTranscriptionString
-                                                              style:UIAlertActionStyleDefault
-                                                            handler:^(UIAlertAction *action) {
-                                                                BOOL ret = [ms enableRequestLiveTranscription:![ms isRequestToStartLiveTranscriptionEnabled]];
-                                                                NSLog(@"LiveTranscription: enableRequestLiveTranscription===>%@",@(ret));
-                                                            }]];
-        }
-
-        if (![ms isMeetingHost]) {
-            [alertController addAction:[UIAlertAction actionWithTitle:@"LiveTranscription: request to start live transcription"
-                                                              style:UIAlertActionStyleDefault
-                                                            handler:^(UIAlertAction *action) {
-                                                                BOOL ret = [ms requestToStartLiveTranscription:YES];
-                                                                NSLog(@"LiveTranscription: requestToStartLiveTranscription===>%@",@(ret));
-                                                            }]];
-        }
-    }
+//    NSLog(@"LiveTranscription: isMeetingSupportCC===>%@", @([ms isMeetingSupportCC]));
+//    NSLog(@"LiveTranscription: isLiveTranscriptionFeatureEnabled===>%@", @([ms isLiveTranscriptionFeatureEnabled]));
+//    NSLog(@"LiveTranscription: canStartLiveTranscription===>%@", @([ms canStartLiveTranscription]));
+//    NSLog(@"LiveTranscription: isRequestToStartLiveTranscriptionEnabled===>%@", @([ms isRequestToStartLiveTranscriptionEnabled]));
+//    if([ms isMeetingSupportCC] && [ms isLiveTranscriptionFeatureEnabled]) {
+//        MobileRTCLiveTranscriptionStatus status = [ms getLiveTranscriptionStatus];
+//        NSLog(@"LiveTranscription: MobileRTCLiveTranscriptionStatus===>%@", @(status));
+//        
+//        if ([ms isMeetingHost]) {
+//            if ([ms canStartLiveTranscription]) {
+//                if (MobileRTC_LiveTranscription_Status_Stop == status) {
+//                    [alertController addAction:[UIAlertAction actionWithTitle:@"start live transcription"
+//                                                                      style:UIAlertActionStyleDefault
+//                                                                    handler:^(UIAlertAction *action) {
+//                                                                        BOOL ret = [ms startLiveTranscription];
+//                                                                        NSLog(@"LiveTranscription: startLiveTranscription===>%@",@(ret));
+//                                                                    }]];
+//                } else if (MobileRTC_LiveTranscription_Status_Start == status) {
+//                    [alertController addAction:[UIAlertAction actionWithTitle:@"LiveTranscription: stop live transcription"
+//                                                                      style:UIAlertActionStyleDefault
+//                                                                    handler:^(UIAlertAction *action) {
+//                                                                        BOOL ret = [ms stopLiveTranscription];
+//                                                                        NSLog(@"LiveTranscription: stopLiveTranscription===>%@",@(ret));
+//                                                                    }]];
+//                }
+//            }
+//            
+//            NSString *enableRequestToStartLiveTranscriptionString = [ms isRequestToStartLiveTranscriptionEnabled] ? @"unenable Request to start live transcription" : @"enable Request to start live transcription";
+//            [alertController addAction:[UIAlertAction actionWithTitle:enableRequestToStartLiveTranscriptionString
+//                                                              style:UIAlertActionStyleDefault
+//                                                            handler:^(UIAlertAction *action) {
+//                                                                BOOL ret = [ms enableRequestLiveTranscription:![ms isRequestToStartLiveTranscriptionEnabled]];
+//                                                                NSLog(@"LiveTranscription: enableRequestLiveTranscription===>%@",@(ret));
+//                                                            }]];
+//        }
+//
+//        if (![ms isMeetingHost]) {
+//            [alertController addAction:[UIAlertAction actionWithTitle:@"LiveTranscription: request to start live transcription"
+//                                                              style:UIAlertActionStyleDefault
+//                                                            handler:^(UIAlertAction *action) {
+//                                                                BOOL ret = [ms requestToStartLiveTranscription:YES];
+//                                                                NSLog(@"LiveTranscription: requestToStartLiveTranscription===>%@",@(ret));
+//                                                            }]];
+//        }
+//    }
     
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
