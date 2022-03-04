@@ -16,6 +16,7 @@
 #import "MobileRTCVideoCapabilityItem.h"
 
 @class MobileRTCInterpretationLanguage;
+@class MobileRTCMeetingParameter;
 #pragma mark - MobileRTCMeetingServiceDelegate
 /*!
  @protocol MobileRTCMeetingServiceDelegate
@@ -36,6 +37,12 @@
  @param state The meeting status changes.
  */
 - (void)onMeetingStateChange:(MobileRTCMeetingState)state;
+
+/*!
+ @brief Meeting parameter notification callback.
+ @param meetingParam meetingParam Meeting parameter.
+ */
+- (void)onMeetingParameterNotification:(MobileRTCMeetingParameter *_Nullable)meetingParam;
 
 /*!
  @brief Notify the user that the requirement to join meeting is confirmed.
@@ -253,8 +260,11 @@
 
 /*!
  @brief Callback event that user receives the Closed Caption.
+ @param message the message of closed caption
+ @param speakerID the speakerID of the closed caption
+ @param msgTime the time of the close caption
  */
-- (void)onClosedCaptionReceived:(NSString * _Nonnull)message;
+- (void)onClosedCaptionReceived:(NSString * _Nonnull)message speakerId:(NSUInteger)speakerID msgTime:(NSDate *_Nullable)msgTime;
 
 /*!
  @brief Callback event that waiting room status changes. 
@@ -364,6 +374,12 @@
 - (void)onSpotlightVideoChange:(BOOL)on;
 
 /*!
+ @brief Callback event that the video spotlight user list changes. Spotlight user means that the view will show only the specified user and won't change even other speaks.
+ @param spotlightedUserList spot light user list.
+ */
+- (void)onSpotlightVideoUserChange:(NSArray <NSNumber *>* _Nonnull)spotlightedUserList;
+
+/*!
  @brief Notify user that preview video is stopped by SDK. Usually the video will show the user himself when there is no other user joins.
  @waring The method MobileRTCPreviewVideoView will stop render, and App will adjust UI. Remove MobileRTCPreviewVideoView instance if it is necessary.
  */
@@ -398,7 +414,7 @@
  @brief Callback event of the video order changes.
  @param orderArr The video order array contains the user ID of listed users.
  */
-- (void)onVideoOrderUpdated:(NSArray <NSNumber *>* _Nullable)orderArr;
+- (void)onHostVideoOrderUpdated:(NSArray <NSNumber *>* _Nullable)orderArr;
 
 /*!
  @brief Notification the status of following host's video order changed.
@@ -773,9 +789,10 @@
 /*!
 @brief Sink the event of receive the live transcription msg.
 @param msg the received live transcription msg.
+@param speakerId the speaker id of the received live transcription msg.
 @param type the live transcription operation type, For more details, see MobileRTCLiveTranscriptionOperationType.
 */
-- (void)onSinkLiveTranscriptionMsgReceived:(NSString *_Nonnull)msg type:(MobileRTCLiveTranscriptionOperationType)type;
+- (void)onSinkLiveTranscriptionMsgReceived:(NSString *_Nonnull)msg speakerId:(NSUInteger)speakerId type:(MobileRTCLiveTranscriptionOperationType)type;
 
 /*!
 @brief Sink the event of request for start the live transcription. Only The HOST can retrieve this callback. You can aprrove request call start live transcription, or decline as do nothing.

@@ -103,7 +103,7 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
     private View mBtnVote;
     private View mBtnCamera;
     private View mBtnAudio;
-    private View mBtnSwitchCamera;
+//    private View mBtnSwitchCamera;
 
     private ImageView mAudioStatusImg;
     private ImageView mVideoStatusImg;
@@ -219,8 +219,8 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
 
         findViewById(R.id.moreActionImg).setOnClickListener(this);
 
-        mBtnSwitchCamera = findViewById(R.id.btnSwitchCamera);
-        mBtnSwitchCamera.setOnClickListener(this);
+//        mBtnSwitchCamera = findViewById(R.id.btnSwitchCamera);
+//        mBtnSwitchCamera.setOnClickListener(this);
 
 
 
@@ -267,9 +267,9 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
         return mTopBar.getMeasuredHeight();
     }
 
-    public View getSwitchCameraView() {
-        return mBtnSwitchCamera;
-    }
+//    public View getSwitchCameraView() {
+//        return mBtnSwitchCamera;
+//    }
 
 
 
@@ -311,9 +311,9 @@ public class MeetingOptionBar extends FrameLayout implements View.OnClickListene
 
     public void updateSwitchCameraButton() {
         if (mInMeetingVideoController.isMyVideoMuted()) {
-            mBtnSwitchCamera.setVisibility(View.GONE);
+//            mBtnSwitchCamera.setVisibility(View.GONE);
         } else {
-            mBtnSwitchCamera.setVisibility(View.VISIBLE);
+//            mBtnSwitchCamera.setVisibility(View.VISIBLE);
         }
     }
 

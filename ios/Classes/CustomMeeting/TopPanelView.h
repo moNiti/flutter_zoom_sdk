@@ -13,6 +13,7 @@
 #define kTagButtonShrink         1000
 #define kTagButtonCameraSwitch   (kTagButtonShrink+1)
 #define kTagButtonEnd            (kTagButtonShrink+2)
+#define kTagButtonQA             (kTagButtonShrink+3)
 
 @interface TopPanelView : UIView
 
@@ -22,5 +23,6 @@
 - (void)updateFrame;
 - (void)showTopPanelView;
 - (void)hiddenTopPanelView;
+- (void)updateQAPanelistButton;
 @end
 

@@ -6,36 +6,52 @@
 
     <LinearLayout
         android:id="@+id/btnBack"
-        android:layout_width="102dp"
-        android:layout_height="64dp"
+        android:layout_width="120dp"
+        android:layout_height="65dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:gravity="center"
-        android:padding="12dp">
+        android:gravity="left"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo" />
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:id="@+id/btnSwitchSideCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/btnBack"
+            android:gravity="center"
+            android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
+            android:duplicateParentState="true"
+            android:focusable="false"
+            android:src="@drawable/icon_switch_camera" />
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/btnSwitchCamera"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_toRightOf="@+id/btnBack"-->
-<!--        android:layout_marginLeft="6dp"-->
-<!--        android:gravity="center">-->
 
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:duplicateParentState="true"-->
-<!--            android:focusable="false"-->
-<!--            android:src="@drawable/icon_switch_camera" />-->
-<!--    </LinearLayout>-->
-
+    <Button
+        android:id="@+id/btnQAPanelist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/btnLeaveZoomMeeting"
+        android:background="@android:color/transparent"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:text="QA"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btnLeaveZoomMeeting"
@@ -44,9 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
         android:ellipsize="middle"
         android:singleLine="true"
-        android:layout_marginRight="6dp"
         android:text="Leave" />
 
 
@@ -55,8 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/meetingNameText"
