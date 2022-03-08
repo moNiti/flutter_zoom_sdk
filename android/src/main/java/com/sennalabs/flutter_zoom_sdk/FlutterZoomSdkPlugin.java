@@ -183,7 +183,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodCallHandler, A
         opts.no_webinar_register_dialog = true;
         opts.webinar_token = options.get("webinarToken");
         opts.no_invite = true;
-        opts.no_share = true;
+//        opts.no_share = true;
         opts.no_titlebar =  true;
 //        opts.no_driving_mode = parseBoolean(options, "disableDrive");
 //        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");

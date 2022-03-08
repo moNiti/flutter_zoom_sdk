@@ -19,6 +19,7 @@ const CGFloat TOP_BTN_LENGTH = 40;
 @property (strong, nonatomic) UIButton        *cameraSwitchBtn;
 @property (strong, nonatomic) UILabel         *titleLabel;
 @property (strong, nonatomic) UIButton        *leaveBtn;
+@property (strong, nonatomic) UIButton        *qaPanelistBtn;
 
 @property (strong, nonatomic) SDKActionPresenter     *actionPresenter;
 @property (strong, nonatomic) SDKVideoPresenter      *videoPresenter;
@@ -26,6 +27,10 @@ const CGFloat TOP_BTN_LENGTH = 40;
 
 @implementation TopPanelView
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self updateFrame];
+}
 - (id)initWithFrame:(CGRect)frame
 {
     NSLog(@"======> CALL INIT WITH FRAME TOPPANELVIEW");
@@ -38,16 +43,17 @@ const CGFloat TOP_BTN_LENGTH = 40;
         self.gradientLayer.startPoint = CGPointMake(0.5, 0);
         self.gradientLayer.endPoint = CGPointMake(0.5, 1);
         self.gradientLayer.colors = @[(__bridge id)[UIColor colorWithWhite:0.f alpha:0.6].CGColor,
-                                 (__bridge id)[UIColor colorWithWhite:0.f alpha:0.0].CGColor];
+                                      (__bridge id)[UIColor colorWithWhite:0.f alpha:0.0].CGColor];
         [self addSubview:self.shrinkBtn];
         
-      
-
-        [self addSubview:self.cameraSwitchBtn];
-        [self addSubview:self.titleLabel];
-        [self addSubview:self.leaveBtn];
         
-  
+        
+        [self addSubview:self.cameraSwitchBtn];
+//        [self addSubview:self.titleLabel];
+        [self addSubview:self.leaveBtn];
+        [self addSubview:self.qaPanelistBtn];
+        
+        
         self.titleLabel.text = [[MobileRTCInviteHelper sharedInstance] ongoingMeetingTopic];
     }
     return self;
@@ -74,10 +80,14 @@ const CGFloat TOP_BTN_LENGTH = 40;
     self.gradientLayer.frame = self.bounds;
     
     CGFloat topGap = 30;
-    self.shrinkBtn.frame = CGRectMake(10, topGap, TOP_BTN_LENGTH, TOP_BTN_LENGTH);
+    self.shrinkBtn.frame = CGRectMake(10, topGap, TOP_BTN_LENGTH+35, TOP_BTN_LENGTH);
     self.cameraSwitchBtn.frame = CGRectMake(CGRectGetMaxX(self.shrinkBtn.frame)+10, topGap, TOP_BTN_LENGTH, TOP_BTN_LENGTH);
     self.leaveBtn.frame = CGRectMake(self.frame.size.width-70, topGap, 60, TOP_BTN_LENGTH);
     self.titleLabel.frame = CGRectMake((self.frame.size.width-120)/2, topGap, 120, TOP_BTN_LENGTH);
+    self.qaPanelistBtn.frame = CGRectMake(self.frame.size.width-130, topGap, 60, TOP_BTN_LENGTH);
+    
+    [self updateQAPanelistButton];
+    [self updateCameraPanelistButton];
 }
 
 - (void)dealloc {
@@ -86,6 +96,7 @@ const CGFloat TOP_BTN_LENGTH = 40;
     self.cameraSwitchBtn = nil;
     self.titleLabel = nil;
     self.leaveBtn = nil;
+    self.qaPanelistBtn = nil;
     
     self.actionPresenter = nil;
     self.videoPresenter = nil;
@@ -96,11 +107,11 @@ const CGFloat TOP_BTN_LENGTH = 40;
 {
     if (!_shrinkBtn)
     {
-
-        _shrinkBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 40, TOP_BTN_LENGTH, TOP_BTN_LENGTH)];
+        
+        _shrinkBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 40, TOP_BTN_LENGTH+35, TOP_BTN_LENGTH)];
         
         [_shrinkBtn setImage:[UIImage imageNamed:@"logo"] forState:UIControlStateNormal];
-
+        
         _shrinkBtn.tag = kTagButtonShrink;
         [_shrinkBtn addTarget:self action:@selector(onTopButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -149,6 +160,20 @@ const CGFloat TOP_BTN_LENGTH = 40;
     return _leaveBtn;
 }
 
+- (UIButton*)qaPanelistBtn
+{
+    if (!_qaPanelistBtn)
+    {
+        _qaPanelistBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 40, 60, TOP_BTN_LENGTH)];
+        [_qaPanelistBtn setTitle:@"QA" forState:UIControlStateNormal];
+        _qaPanelistBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+        [_qaPanelistBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _qaPanelistBtn.tag = kTagButtonQA;
+        [_qaPanelistBtn addTarget:self action:@selector(onTopButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _qaPanelistBtn;
+}
+
 - (SDKActionPresenter *)actionPresenter
 {
     if (!_actionPresenter)
@@ -180,17 +205,17 @@ const CGFloat TOP_BTN_LENGTH = 40;
             [alertController addAction:[UIAlertAction actionWithTitle:@"Leave Meeting"
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction *action) {
-                                                                  
-                                                                  [self.actionPresenter leaveMeeting];
-                                                              }]];
+                
+                [self.actionPresenter leaveMeeting];
+            }]];
             
             if ([self.actionPresenter isMeetingHost]) {
                 [alertController addAction:[UIAlertAction actionWithTitle:@"End Meeting"
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction *action) {
-                                                                      
-                                                                      [self.actionPresenter EndMeeting];
-                                                                  }]];
+                    
+                    [self.actionPresenter EndMeeting];
+                }]];
             }
             
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -216,23 +241,45 @@ const CGFloat TOP_BTN_LENGTH = 40;
         }
         case kTagButtonShrink:
         {
-//            if (self.shrinkButtonClickBlock) {
-//                self.shrinkButtonClickBlock();
-//            }
+            //            if (self.shrinkButtonClickBlock) {
+            //                self.shrinkButtonClickBlock();
+            //            }
             break;
+        }
+        case kTagButtonQA:
+        {
+            UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+            [[[MobileRTC sharedRTC] getMeetingService] presentQAViewController:topViewController];
         }
         default:
             break;
     }
 }
 
+- (void)updateQAPanelistButton {
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    if([ms isWebinarPanelist]) {
+        self.qaPanelistBtn.hidden = NO;
+    }else {
+        self.qaPanelistBtn.hidden = YES;
+    }
+}
+
+- (void)updateCameraPanelistButton {
+    MobileRTCMeetingService *ms = [[MobileRTC sharedRTC] getMeetingService];
+    if([ms isWebinarAttendee]) {
+        self.cameraSwitchBtn.hidden = YES;
+    }else {
+        self.cameraSwitchBtn.hidden = NO;
+    }
+}
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

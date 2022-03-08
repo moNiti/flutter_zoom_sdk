@@ -65,7 +65,7 @@
       "Add" : 10,
       "Convolution" : 48,
       "ActivationSigmoid" : 1,
-      "InnerProduct" : 8
+      "InnerProduct" : 4
     },
     "modelType" : {
       "name" : "MLModelType_neuralNetwork"

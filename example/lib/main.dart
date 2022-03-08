@@ -34,6 +34,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    debugPrint('CALLLLLL DISPOSE');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -56,9 +63,9 @@ class _MyAppState extends State<MyApp> {
                     dynamic result =
                         await FlutterZoomSdk().joinMeeting(JoinMeetingParams(
                       displayName: "885/822 นิติ",
-                      meetingNo: "98791537817",
+                      meetingNo: "97602147392",
                       email: "fah@sennalabs.com",
-                      password: "962093",
+                      password: "760598",
                       webinarToken:
                           "dPfF8dvAuOOywG2lIZwxtLdNwsX67816PtVE7V1Ajts.DQMAAAAXDeranhZXamtwb0dlOVR5MkZBY0dsNjNGdDJBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     ));

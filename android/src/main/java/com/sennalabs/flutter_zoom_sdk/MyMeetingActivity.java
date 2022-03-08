@@ -1,25 +1,43 @@
 package com.sennalabs.flutter_zoom_sdk;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+
+import us.zoom.sdk.CameraDevice;
 import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingService;
+import us.zoom.sdk.InMeetingUserInfo;
+import us.zoom.sdk.InMeetingVideoController;
 import us.zoom.sdk.MeetingActivity;
 import us.zoom.sdk.MeetingStatus;
 import us.zoom.sdk.SimpleZoomUIDelegate;
 import us.zoom.sdk.ZoomSDK;
+
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.other.MeetingCommonCallback;
 import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.MeetingOptionBar;
+import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.adapter.CameraMenuItem;
+import com.sennalabs.flutter_zoom_sdk.inmeetingfunction.customizedmeetingui.view.adapter.SimpleMenuAdapter;
+
+import java.util.List;
 
 
-public class MyMeetingActivity extends MeetingActivity implements MeetingCommonCallback.CommonEvent, View.OnClickListener  {
+public class MyMeetingActivity extends MeetingActivity implements MeetingCommonCallback.CommonEvent, View.OnClickListener {
     View mTopBar;
     private View mBtnLeave;
+    private View mBtnQAPanelist;
+    private View mBtnSwitchCamera;
 
-    MeetingOptionBar.MeetingOptionBarCallBack mCallBack;
     private InMeetingService mInMeetingService;
+    private InMeetingVideoController mInMeetingVideoController;
 
 
     @Override
@@ -40,10 +58,10 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
     @Override
     public void onToolbarVisibilityChanged(boolean b) {
         super.onToolbarVisibilityChanged(b);
-        if(mTopBar != null) {
-            if(b) {
+        if (mTopBar != null) {
+            if (b) {
                 mTopBar.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mTopBar.setVisibility(View.GONE);
             }
         }
@@ -79,7 +97,14 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
         mBtnLeave = findViewById(R.id.btnLeaveZoomMeeting);
         mBtnLeave.setOnClickListener(this);
 
+        mBtnQAPanelist = findViewById(R.id.btnQAPanelist);
+        mBtnQAPanelist.setOnClickListener(this);
+
+        mBtnSwitchCamera = findViewById(R.id.btnSwitchSideCamera);
+        mBtnSwitchCamera.setOnClickListener(this);
+
         mInMeetingService = ZoomSDK.getInstance().getInMeetingService();
+        mInMeetingVideoController = mInMeetingService.getInMeetingVideoController();
     }
 
     private void unRegisterListener() {
@@ -114,9 +139,11 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
     @Override
     public void onMeetingStatusChanged(MeetingStatus meetingStatus, int errorCode, int internalErrorCode) {
         System.out.println("=>>>>> onMeetingStatusChanged");
-        if(meetingStatus == MeetingStatus.MEETING_STATUS_INMEETING) {
+        if (meetingStatus == MeetingStatus.MEETING_STATUS_INMEETING) {
+            refreshTopBar();
             mTopBar.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
@@ -136,7 +163,7 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
         String displayName = FlutterZoomSdkPlugin.INSTANCE.getDisplayName();
         String email = FlutterZoomSdkPlugin.INSTANCE.getEmail();
 
-        if(displayName != null && email != null) {
+        if (displayName != null && email != null) {
             inMeetingEventHandler.setRegisterWebinarInfo(displayName, email, false);
         }
     }
@@ -149,10 +176,36 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
     @Override
     public void onClick(View v) {
         int id = v.getId();
-         if (id == R.id.btnLeaveZoomMeeting) {
-             showLeaveMeetingDialog();
+        if (id == R.id.btnLeaveZoomMeeting) {
+            showLeaveMeetingDialog();
+        } else if (id == R.id.btnQAPanelist) {
+            mInMeetingService.showZoomQAUI(this, 13);
+        } else if (id == R.id.btnSwitchSideCamera) {
+            switchSideCamera();
         }
 
+    }
+
+    public void updateQAPanelistButton() {
+        InMeetingUserInfo myUserInfo = mInMeetingService.getMyUserInfo();
+        if (myUserInfo != null && mInMeetingService.isWebinarMeeting()) {
+            if (myUserInfo.getInMeetingUserRole() == InMeetingUserInfo.InMeetingUserRole.USERROLE_PANELIST) {
+                mBtnQAPanelist.setVisibility(View.VISIBLE);
+            } else {
+                mBtnQAPanelist.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void updateSwitchCameraButton() {
+        InMeetingUserInfo myUserInfo = mInMeetingService.getMyUserInfo();
+        if (myUserInfo != null && mInMeetingService.isWebinarMeeting()) {
+            if (myUserInfo.getInMeetingUserRole() == InMeetingUserInfo.InMeetingUserRole.USERROLE_PANELIST) {
+                mBtnSwitchCamera.setVisibility(View.VISIBLE);
+            } else {
+                mBtnSwitchCamera.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void showLeaveMeetingDialog() {
@@ -195,6 +248,17 @@ public class MyMeetingActivity extends MeetingActivity implements MeetingCommonC
     private void leave(boolean end) {
         finish();
         mInMeetingService.leaveCurrentMeeting(end);
+    }
+
+    public void switchSideCamera() {
+        if (mInMeetingVideoController.canSwitchCamera()) {
+            mInMeetingVideoController.switchToNextCamera();
+        }
+    }
+
+    public void refreshTopBar(){
+        updateQAPanelistButton();
+        updateSwitchCameraButton();
     }
 
 }
