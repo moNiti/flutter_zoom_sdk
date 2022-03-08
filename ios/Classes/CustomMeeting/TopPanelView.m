@@ -27,6 +27,10 @@ const CGFloat TOP_BTN_LENGTH = 40;
 
 @implementation TopPanelView
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self updateFrame];
+}
 - (id)initWithFrame:(CGRect)frame
 {
     NSLog(@"======> CALL INIT WITH FRAME TOPPANELVIEW");
